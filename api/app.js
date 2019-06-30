@@ -3,7 +3,7 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
-
+var config = require('./config/config');
 var meetupAuthRouter = require('./routes/meetup-auth');
 
 var app = express();
@@ -39,7 +39,7 @@ app.use(function (err, req, res, next) {
 });
 
 app.listen(80, function () {
-    console.log('localhost running on 80')
+    console.log('localhost running on 80', config.NODE_ENV)
 });
 
 module.exports = app;
