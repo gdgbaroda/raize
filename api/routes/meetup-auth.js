@@ -10,7 +10,7 @@ mongoose.connect(config.MONGODB_CONNECTION, {useNewUrlParser: true});
 passport.use(new MeetupOAuth2Strategy({
     clientID: config.MEETUP_CLIENT_ID,
     clientSecret: config.MEETUP_CLIENT_SECRET,
-    callbackURL: "http://localhost/",
+    callbackURL: config.MEETUP_CALLBACK_URL,
 }, function (accessToken, refreshToken, profile, done) {
     return done(null, profile);
 }));
@@ -21,19 +21,19 @@ router.get('/auth/meetup',
         return res.json(req.user);
     });
 
-router.get('/', function (req, res) {
+router.get('/callback/meetup', function (req, res) {
     axios.post('https://secure.meetup.com/oauth2/access', {}, {
         params: {
             client_id: config.MEETUP_CLIENT_ID,
             client_secret: config.MEETUP_CLIENT_SECRET,
             grant_type: 'authorization_code',
-            redirect_uri: 'http://localhost',
+            redirect_uri: config.MEETUP_CALLBACK_URL,
             code: req.query.code
         }
     }).then((data) => {
         return res.json(data.data)
     }).catch((error) => {
-        console.error(error)
+        // console.error(error)
     });
 });
 
