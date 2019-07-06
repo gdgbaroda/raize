@@ -18,6 +18,7 @@ class _MyAppState extends State<MyApp> {
   String _reader = '';
   Color _resultColor;
   Permission permission = Permission.Camera;
+  AssetImage _statusImg = new AssetImage('');
 
   @override
   Widget build(BuildContext context) {
@@ -42,10 +43,20 @@ class _MyAppState extends State<MyApp> {
             new Padding(
               padding: const EdgeInsets.symmetric(vertical: 10.0),
             ),
-            new Text(
-              '$_reader',
-              softWrap: true,
-              style: new TextStyle(fontSize: 20.0, color: _resultColor ),
+            new Row(
+              children: <Widget>[
+                new Text(
+                  '$_reader',
+                  softWrap: true,
+                  style: new TextStyle(fontSize: 20.0, color: _resultColor),
+                ),
+                new Image(
+                  image: _statusImg,
+                  height: 50,
+                  width: 50,
+                  fit: BoxFit.fill,
+                ),
+              ],
             ),
           ],
         ),
@@ -93,9 +104,11 @@ class _MyAppState extends State<MyApp> {
     if (userAuthenticated) {
       this._reader = "Approved..";
       this._resultColor = Colors.green;
+      _statusImg = new AssetImage('assets/img_approved_candidate.jpeg');
     } else {
-      this._reader = "Please contact event orgnaizer!";
+      this._reader = "Please contact Orgnaizer!";
       this._resultColor = Colors.red;
+      _statusImg = new AssetImage('assets/img_rejected_candidate.jpeg');
     }
   }
 }
