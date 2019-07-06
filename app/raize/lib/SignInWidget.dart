@@ -1,8 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:raize/EventWidget.dart';
-import 'package:raize/Model/EventModel.dart';
+import 'package:raize/EventDetailWidget.dart';
 
 class SignInWidget extends StatefulWidget {
   static String tag = 'signin-screen';
@@ -15,16 +14,10 @@ class _SignInWidget extends State<SignInWidget> {
   void initState() {
     super.initState();
 
-    Timer(Duration(seconds: 5), () => Navigator.push(
+    Timer(Duration(seconds: 2), () => Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => new EventWidget(event:
-      [
-      new EventModel('Tech event ','assets/person.jpeg',"26/June 1 Am"),
-      new EventModel('Android Tech talk ','assets/person.jpeg',"25/November 1 Am"),
-      new EventModel('Fly With Flutter ','assets/person.jpeg',"1 December 1 Am"),
-      ],),//goes to the next page
-      ),
+        builder: (context) => new EventDetailWidget())
     ));
   }
 

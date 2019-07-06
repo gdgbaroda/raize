@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:raize/SignInWidget.dart';
 import 'package:raize/SplashWidget.dart';
-import 'package:raize/EventWidget.dart';
+import 'package:raize/EventDetailWidget.dart';
 
 void main() => runApp(MyApp());
 
@@ -10,7 +10,7 @@ class MyApp extends StatelessWidget {
   final routes = <String, WidgetBuilder>{
     SplashWidget.tag: (context) => SplashWidget(),
     SignInWidget.tag: (context) => SignInWidget(),
-    EventWidget.tag: (context) => EventWidget(),
+    EventDetailWidget.tag: (context) => EventDetailWidget(),
   };
   @override
   Widget build(BuildContext context) {
