@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:raize/EventDetailWidget.dart';
+import 'package:raize/EventDetailsWidget.dart';
 
 class SignInWidget extends StatefulWidget {
   static String tag = 'signin-screen';
@@ -14,11 +14,11 @@ class _SignInWidget extends State<SignInWidget> {
   void initState() {
     super.initState();
 
-    Timer(Duration(seconds: 2), () => Navigator.push(
+    /*Timer(Duration(seconds: 2), () => Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => new EventDetailWidget())
-    ));
+       // builder: (context) => new EventDetailWidget())
+    ));*/
   }
 
   @override
