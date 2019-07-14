@@ -12,15 +12,20 @@ class EventDetailsWidget extends StatefulWidget {
   EventDetailsWidget({@required  this.eventModel}) ;
 
   @override
-  _EventState createState() => _EventState();
+  _EventState createState() => _EventState(eventModel);
 }
 
 class _EventState extends State<EventDetailsWidget> {
+  EventModel eventModel;
+  _EventState(EventModel eventModel){
+    this.eventModel = eventModel;
+  }
+
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
         appBar: new AppBar(
-          title: new Text("Events Detail"),
+          title: new Text(eventModel.title),
         ),
         body: new Container(
           padding: new EdgeInsets.all(8.0),
