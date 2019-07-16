@@ -47,6 +47,7 @@ flutter:
     - assets/img_approved_candidate.jpeg
     - assets/imp_pending_candidate.jpeg
     - assets/img_rejected_candidate.jpeg
+    - assets/raize-dummy-events-list.json
   #  - images/a_dot_burr.jpeg
   #  - images/a_dot_ham.jpeg
 
