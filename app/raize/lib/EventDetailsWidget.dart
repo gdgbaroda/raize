@@ -31,7 +31,7 @@ class _EventState extends State<EventDetailsWidget> {
           padding: new EdgeInsets.all(8.0),
           child: new Column(
             crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[new DetailWidget()],
+            children: <Widget>[new DetailWidget(eventModel:eventModel)],
           ),
         ));
   }

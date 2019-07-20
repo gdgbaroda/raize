@@ -5,12 +5,23 @@ import 'package:raize/QRScanAPI.dart';
 import 'package:simple_permissions/simple_permissions.dart';
 import 'package:barcode_scan/barcode_scan.dart';
 
+import 'models/EventModel.dart';
+
 class DetailWidget extends StatefulWidget {
+  final EventModel eventModel;
+
+  DetailWidget({@required  this.eventModel});
   @override
-  _MyAppState createState() => new _MyAppState();
+  _MyAppState createState() => new _MyAppState(eventModel);
 }
 
 class _MyAppState extends State<DetailWidget> {
+
+  EventModel eventModel;
+  _MyAppState(EventModel eventModel){
+    this.eventModel = eventModel;
+  }
+
   String _reader = '';
   Color _resultColor;
   Permission permission = Permission.Camera;
@@ -22,23 +33,22 @@ class _MyAppState extends State<DetailWidget> {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        new Image(
-          image: new AssetImage('assets/person.jpeg'),
+        new Image.network(eventModel.banner,
           height: 150,
-          width: 150,
-          fit: BoxFit.fill,
+          width: double.infinity,
+          fit: BoxFit.fitWidth,
         ),
         Padding(
           padding: const EdgeInsets.all(8.0),
           child: new Text(
-            " GDG Baroda Co- routine",
+            eventModel.description,
             style: TextStyle(fontSize: 20),
           ),
         ),
         Padding(
           padding: const EdgeInsets.all(8.0),
           child: new Text(
-            "23rd july ",
+            eventModel.duration.start.date,
             style: TextStyle(fontSize: 20),
           ),
         ),

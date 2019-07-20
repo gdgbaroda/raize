@@ -30,7 +30,7 @@ class _EventListWidget extends State<EventListWidget> {
 
       _addItem({
         "id": 1,
-        "banner": "https://dart-code.gallerycdn.vsassets.io/extensions/dart-code/flutter/3.2.0/1561724669242/Microsoft.VisualStudio.Services.Icons.Default",
+        "banner":"https://picsum.photos/250?image=9",
         "title":"Learning flutter: Rx dart",
         "description":"this event will be about learning how to implement rx in dart project",
         "hosts":[
