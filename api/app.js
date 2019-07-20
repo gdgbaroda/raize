@@ -10,6 +10,7 @@ var logger = require('morgan');
 var config = require('./config/config');
 var meetupAuthRouter = require('./routes/meetup-auth');
 var meetupGroupList = require('./routes/meetup-groups-list');
+var meetupEventsList = require('./routes/meetup-event-list');
 
 
 var app = express();
@@ -35,6 +36,7 @@ app.use(flash());
 
 app.use('/', meetupAuthRouter);
 app.use('/meetup/me/groups', meetupGroupList);
+app.use('/meetup/events', meetupEventsList);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
