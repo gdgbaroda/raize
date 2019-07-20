@@ -5,6 +5,7 @@ const mongoose = require('mongoose');
 const passport = require('passport');
 let MeetupOAuth2Strategy = require('passport-oauth2-meetup').Strategy;
 let config = require('../config/config');
+
 mongoose.connect(config.MONGODB_CONNECTION, {useNewUrlParser: true});
 
 passport.use(new MeetupOAuth2Strategy({
@@ -31,7 +32,9 @@ router.get('/callback/meetup', function (req, res) {
             code: req.query.code
         }
     }).then((data) => {
+        req.flash("user", data.data);
         return res.json(data.data)
+
     }).catch((error) => {
         // console.error(error)
     });

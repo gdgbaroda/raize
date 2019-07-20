@@ -1,10 +1,16 @@
 var createError = require('http-errors');
 var express = require('express');
 var path = require('path');
+var flash = require('connect-flash');
+
+var session = require('express-session');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+
 var config = require('./config/config');
 var meetupAuthRouter = require('./routes/meetup-auth');
+var meetupGroupList = require('./routes/meetup-groups-list');
+
 
 var app = express();
 
@@ -18,8 +24,17 @@ app.use(express.urlencoded({extended: false}));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+app.use(session({
+    cookie: {maxAge: 60000},
+    secret: 'woot',
+    resave: false,
+    saveUninitialized: false
+}));
+app.use(flash());
+
 
 app.use('/', meetupAuthRouter);
+app.use('/meetup/me/groups', meetupGroupList);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
