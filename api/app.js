@@ -19,6 +19,9 @@ let meetupDataApiParsed = require('./routes/meetup-parsed');
 // let meetupRsvp = require('./routes/meetup-rsvp');
 
 
+const PORT = 8080;
+const HOST = '0.0.0.0';
+
 let app = express();
 
 // view engine setup
@@ -67,8 +70,7 @@ app.use(function (err, req, res, next) {
     res.render('error');
 });
 
-app.listen(80, function () {
-    console.log('localhost running on 80', config.NODE_ENV)
-});
+app.listen(PORT, HOST);
+console.log(`Running on http://${HOST}:${PORT}`);
 
 module.exports = app;
