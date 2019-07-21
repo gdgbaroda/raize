@@ -1,12 +1,23 @@
-var createError = require('http-errors');
-var express = require('express');
-var path = require('path');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
-var config = require('./config/config');
-var meetupAuthRouter = require('./routes/meetup-auth');
+let createError = require('http-errors');
+let express = require('express');
+let path = require('path');
+let flash = require('connect-flash');
 
-var app = express();
+let session = require('express-session');
+let cookieParser = require('cookie-parser');
+let logger = require('morgan');
+
+let config = require('./config/config');
+// let meetupAuthRouter = require('./routes/meetup-auth');
+
+let meetupDataApi = require('./routes/meetup');
+
+// let meetupGroupList = require('./routes/meetup-groups-list');
+// let meetupEventsList = require('./routes/meetup-event-list');
+// let meetupRsvp = require('./routes/meetup-rsvp');
+
+
+let app = express();
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -18,8 +29,20 @@ app.use(express.urlencoded({extended: false}));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+app.use(session({
+    cookie: {maxAge: 60000},
+    secret: 'woot',
+    resave: false,
+    saveUninitialized: false
+}));
+app.use(flash());
 
-app.use('/', meetupAuthRouter);
+
+// app.use('/', meetupAuthRouter);
+app.use('/meetup/', meetupDataApi);
+// app.use('/meetup/me/groups', meetupGroupList);
+// app.use('/meetup/events', meetupEventsList);
+// app.use('/meetup/rsvp', meetupRsvp);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
