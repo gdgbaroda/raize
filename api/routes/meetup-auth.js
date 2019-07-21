@@ -16,13 +16,13 @@ passport.use(new MeetupOAuth2Strategy({
     return done(null, profile);
 }));
 
-router.get('/auth/meetup',
+router.get('/',
     passport.authenticate('meetup', {session: true}),
     function (req, res) {
         return res.json(req.user);
     });
 
-router.get('/callback/meetup', function (req, res) {
+router.get('/meetup/callback', function (req, res) {
     axios.post('https://secure.meetup.com/oauth2/access', {}, {
         params: {
             client_id: config.MEETUP_CLIENT_ID,
