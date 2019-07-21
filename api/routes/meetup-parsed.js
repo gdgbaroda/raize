@@ -37,6 +37,7 @@ router.get('/callback', function (req, res) {
     }).then((data) => {
         req.flash("user", data.data);
         req.session.user = data.data;
+
         return res.json(data.data)
 
     }).catch((error) => {
@@ -45,23 +46,36 @@ router.get('/callback', function (req, res) {
 });
 
 //fetching groups of authenticated user
-router.get('/groups', function (req, res) {
+router.get('/groups', async function (req, res) {
     let user = req.flash("user");
     // let access_token = user[0].access_token;
     let access_token = req.session.user.access_token;
-    axios.get('https://api.meetup.com/self/groups', {
+
+    let parsed_group_data = [];
+    await axios.get('https://api.meetup.com/self/groups', {
         headers: {
             Authorization: "Bearer " + access_token,
         }
     }).then((data) => {
 
-        return res.json(data.data)
+        data.data.forEach(all_data => {
+
+
+            parsed_group_data.push({
+                title: all_data.name,
+                source: "meetup",
+                location: all_data.localized_location,
+                events: events_id,
+                lastUpdatedOn: all_data.updated,
+                isActive: all_data.status,
+            });
+        });
 
     }).catch((error) => {
         console.error(error)
     });
 
-
+    return res.json(parsed_group_data)
 });
 
 //fetching events of a group
