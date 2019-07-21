@@ -8,11 +8,11 @@ let config = require('../config/config');
 mongoose.connect(config.MONGODB_CONNECTION, {useNewUrlParser: true});
 
 
-router.get('/:urlname', function (req, res) {
+router.get('/:urlname/:event_id', function (req, res) {
     let user = req.flash("user");
     let access_token = user[0].access_token;
 
-    axios.get(`https://api.meetup.com/${req.params.urlname}/events`, {
+    axios.get(`https://api.meetup.com/${req.params.urlname}/events/${req.params.event_id}/rsvps`, {
         headers: {
             Authorization: "Bearer " + access_token,
         }
@@ -21,6 +21,7 @@ router.get('/:urlname', function (req, res) {
     }).catch((error) => {
         console.error(error)
     });
+
 });
 
 
