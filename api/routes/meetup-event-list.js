@@ -5,7 +5,7 @@ const mongoose = require('mongoose');
 let config = require('../config/config');
 
 
-mongoose.connect(config.MONGODB_CONNECTION, {useNewUrlParser: true});
+// mongoose.connect(config.MONGODB_CONNECTION, {useNewUrlParser: true});
 
 
 router.get('/:urlname', function (req, res) {

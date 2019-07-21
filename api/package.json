@@ -19,6 +19,8 @@
     "passport": "^0.4.0",
     "passport-oauth2-meetup": "^1.1.0",
     "pug": "2.0.0-beta11",
-    "request": "^2.88.0"
+    "request": "^2.88.0",
+    "swagger-jsdoc": "^3.3.0",
+    "swagger-ui-express": "^4.0.7"
   }
 }
