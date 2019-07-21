@@ -36,6 +36,7 @@ router.get('/callback', function (req, res) {
         }
     }).then((data) => {
         req.flash("user", data.data);
+        req.session.user = data.data;
         return res.json(data.data)
 
     }).catch((error) => {
@@ -44,25 +45,30 @@ router.get('/callback', function (req, res) {
 });
 
 //fetching groups of authenticated user
-router.get('/me/groups', function (req, res) {
+router.get('/groups', function (req, res) {
     let user = req.flash("user");
-    let access_token = user[0].access_token;
-
+    // let access_token = user[0].access_token;
+    let access_token = req.session.user.access_token;
     axios.get('https://api.meetup.com/self/groups', {
         headers: {
             Authorization: "Bearer " + access_token,
         }
     }).then((data) => {
+
         return res.json(data.data)
+
     }).catch((error) => {
         console.error(error)
     });
+
+
 });
 
 //fetching events of a group
 router.get('/:urlname/', function (req, res) {
     let user = req.flash("user");
-    let access_token = user[0].access_token;
+    // let access_token = user[0].access_token;
+    let access_token = req.session.user.access_token;
 
     axios.get(`https://api.meetup.com/${req.params.urlname}/events`, {
         headers: {
@@ -78,7 +84,8 @@ router.get('/:urlname/', function (req, res) {
 //fetching rsvp of an event
 router.get('/:urlname/:event_id/rsvp', function (req, res) {
     let user = req.flash("user");
-    let access_token = user[0].access_token;
+// let access_token = user[0].access_token;
+    let access_token = req.session.user.access_token;
 
     axios.get(`https://api.meetup.com/${req.params.urlname}/events/${req.params.event_id}/rsvps`, {
         headers: {

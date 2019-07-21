@@ -12,6 +12,8 @@ let config = require('./config/config');
 
 let meetupDataApi = require('./routes/meetup');
 
+let meetupDataApiParsed = require('./routes/meetup-parsed');
+
 // let meetupGroupList = require('./routes/meetup-groups-list');
 // let meetupEventsList = require('./routes/meetup-event-list');
 // let meetupRsvp = require('./routes/meetup-rsvp');
@@ -39,7 +41,11 @@ app.use(flash());
 
 
 // app.use('/', meetupAuthRouter);
+
 app.use('/meetup/', meetupDataApi);
+app.use('/meetup/parsed/', meetupDataApiParsed);
+
+
 // app.use('/meetup/me/groups', meetupGroupList);
 // app.use('/meetup/events', meetupEventsList);
 // app.use('/meetup/rsvp', meetupRsvp);
