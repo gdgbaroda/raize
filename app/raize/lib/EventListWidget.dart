@@ -29,54 +29,161 @@ class _EventListWidget extends State<EventListWidget> {
     for (var i =0;i<15;i++){
 
       _addItem({
-        "id": 1,
-        "banner":"https://picsum.photos/250?image=9",
-        "title":"Learning flutter: Rx dart",
-        "description":"this event will be about learning how to implement rx in dart project",
-        "hosts":[
+        "id":"4253ff73-99c2-4cfa-b785-7cbb8c4c0a8f",
+        "title":"GDG Baroda",
+        "source":"meetup.com",
+        "location":
+        {
+          "city":"Vadodara",
+          "country":"India"
+        },
+        "events":
+        [
           {
-            "fullname": "kushal dave",
-            "email":"kushaldave2015@gmail.com"
-          },
-          {
-            "fullname": "kushal",
-            "email":"kushaldave2011@gmail.com"
-          }
-        ],
-        "attendees":[
-          {
-            "fullname": "Jane Doe",
-            "email":"jane.doe@gmail.com",
-            "state":[
+            "id": "4253ff73-99c2-4cfa-b785-7cbb8c4c0a8f",
+            "banner": "https://dart-code.gallerycdn.vsassets.io/extensions/dart-code/flutter/3.2.0/1561724669242/Microsoft.VisualStudio.Services.Icons.Default",
+            "title":"Learning flutter: Rx dart",
+            "description":"this event will be about learning how to implement rx in dart project",
+            "hosts":[
               {
-                "value":"Invited",
-                "updatedOn":"01/01/2019"
+                "fullname": "kushal dave",
+                "email":"kushaldave2015@gmail.com"
               },
               {
-                "value":"Invited",
-                "updatedOn":"01/01/2019"
+                "fullname": "kushal",
+                "email":"kushaldave2011@gmail.com"
               }
-            ]
-          }
-        ],
-        "venue": {
-          "address":"xya",
-          "city": "vadodara",
-          "state":"gujarat",
-          "country":"INDIA",
-          "pinCode":123456
-        },
-        "duration":{
-          "start":{
-            "date":"01/01/2019",
-            "time":"10:00"
+            ],
+            "attendees":
+            [
+              {
+                "fullname": "Jane Doe",
+                "email":"jane.doe@gmail.com",
+                "state":
+                [
+                  {
+                    "value":"Invited",
+                    "updatedOn":"01/01/2019"
+                  }
+                ]
+              }
+            ],
+            "venue":
+            {
+              "address":"Sayaji The Hotel",
+              "city": "Vadodara",
+              "state":"Gujarat",
+              "country":"INDIA",
+              "pinCode":390001
+            },
+            "duration":{
+              "start":{
+                "date":"01/01/2019",
+                "time":"10:00"
+              },
+              "end":{
+                "date":"01/01/2019",
+                "time":"12:00"
+              }
+            },
+            "isActive": true
           },
-          "end":{
-            "date":"01/01/2019",
-            "time":"12:00"
+          {
+            "id": "4253ff73-99c2-4cfa-b785-7cbb8c4c0a50",
+            "banner": "https://dart-code.gallerycdn.vsassets.io/extensions/dart-code/flutter/3.2.0/1561724669242/Microsoft.VisualStudio.Services.Icons.Default",
+            "title":"Flutter with Visual Code",
+            "description":"Action packed demo driven session for using Flutter with Microsoft Visual Code editor",
+            "hosts":
+            [
+              {
+                "fullname": "Prachi Durge",
+                "email":"prachidurge@gmail.com"
+              }
+            ],
+            "attendees":
+            [
+              {
+                "fullname": "Jane Doe",
+                "email":"jane.doe@gmail.com",
+                "state":
+                [
+                  {
+                    "value":"Invited",
+                    "updatedOn":"01/01/2019"
+                  }
+                ]
+              }
+            ],
+            "venue":
+            {
+              "address":"Arnomaly Labs",
+              "city": "Vadodara",
+              "state":"Gujarat",
+              "country":"INDIA",
+              "pinCode":390020
+            },
+            "duration":{
+              "start":{
+                "date":"01/02/2019",
+                "time":"10:00"
+              },
+              "end":{
+                "date":"01/02/2019",
+                "time":"12:00"
+              }
+            },
+            "isActive": true
+          },
+          {
+            "id": "4253ff73-99c2-4cfa-b785-7cbb8c4c0a50",
+            "banner": "https://dart-code.gallerycdn.vsassets.io/extensions/dart-code/flutter/3.2.0/1561724669242/Microsoft.VisualStudio.Services.Icons.Default",
+            "title":"Flutter with Visual Code",
+            "description":"Action packed demo driven session for using Flutter with Microsoft Visual Code editor",
+            "hosts":
+            [
+              {
+                "fullname": "Prachi Durge",
+                "email":"prachidurge@gmail.com"
+              }
+            ],
+            "attendees":
+            [
+              {
+                "fullname": "Jane Doe",
+                "email":"jane.doe@gmail.com",
+                "state":
+                [
+                  {
+                    "value":"Invited",
+                    "updatedOn":"01/01/2019"
+                  }
+                ]
+              }
+            ],
+            "venue":
+            {
+              "address":"Arnomaly Labs",
+              "city": "Vadodara",
+              "state":"Gujarat",
+              "country":"INDIA",
+              "pinCode":390020
+            },
+            "duration":{
+              "start":{
+                "date":"01/02/2019",
+                "time":"10:00"
+              },
+              "end":{
+                "date":"01/02/2019",
+                "time":"12:00"
+              }
+            },
+            "isActive": true
           }
-        },
-        "isActive": true
+
+        ],
+        "lastUpdatedOn":"14/07/2019 12:35:54",
+        "isactive":true
       });
     }
   }
