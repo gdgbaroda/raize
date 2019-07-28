@@ -34,7 +34,7 @@ router.get('/auth',
 /**
  * @swagger
  * /callback:
- *    post:
+ *    get:
  *      description: Handle callback to generate access token for the authorized meetup user
  */
 router.get('/callback', function (req, res) {
