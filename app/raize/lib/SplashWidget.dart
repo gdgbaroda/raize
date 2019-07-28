@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:raize/SignInWidget.dart';
+import 'package:raize/EventListWidget.dart';
 
 class SplashWidget extends StatefulWidget {
   static String tag = 'splash-screen';
@@ -16,7 +16,7 @@ class _SplashWidget extends State<SplashWidget> {
     Timer(Duration(seconds: 5), () => Navigator.push(
       context,
       MaterialPageRoute(
-            builder: (context) => SignInWidget(),//goes to the next page
+            builder: (context) => EventListWidget(),//goes to the next page
       ),
     ));
   }
