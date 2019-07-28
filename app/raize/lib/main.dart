@@ -3,6 +3,7 @@ import 'package:raize/EventListWidget.dart';
 import 'package:raize/SignInWidget.dart';
 import 'package:raize/SplashWidget.dart';
 
+
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
@@ -11,6 +12,7 @@ class MyApp extends StatelessWidget {
     SplashWidget.tag: (context) => SplashWidget(),
     SignInWidget.tag: (context) => SignInWidget(),
     EventListWidget.tag: (context) => EventListWidget()
+   // EventDetailWidget.tag: (context) => EventDetailWidget(),
   };
   @override
   Widget build(BuildContext context) {

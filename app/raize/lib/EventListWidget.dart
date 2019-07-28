@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:raize/models/EventModel.dart';
 import 'package:http/http.dart' as http;
+import 'package:raize/EventDetailsWidget.dart';
 
 class EventListWidget extends StatefulWidget {
   static String tag = 'eventList-screen';
@@ -25,11 +26,11 @@ class _EventListWidget extends State<EventListWidget> {
   void initState() {
     super.initState();
     //this will be called at the start of the activity,it will add dummy data to our list
-    for (var i =0;i<5;i++){
+    for (var i =0;i<15;i++){
 
       _addItem({
         "id": 1,
-        "banner": "https://dart-code.gallerycdn.vsassets.io/extensions/dart-code/flutter/3.2.0/1561724669242/Microsoft.VisualStudio.Services.Icons.Default",
+        "banner":"https://picsum.photos/250?image=9",
         "title":"Learning flutter: Rx dart",
         "description":"this event will be about learning how to implement rx in dart project",
         "hosts":[
@@ -44,8 +45,8 @@ class _EventListWidget extends State<EventListWidget> {
         ],
         "attendees":[
           {
-            "fullname": "kushal",
-            "email":"kushaldave2011@gmail.com",
+            "fullname": "Jane Doe",
+            "email":"jane.doe@gmail.com",
             "state":[
               {
                 "value":"Invited",
@@ -88,7 +89,8 @@ class _EventListWidget extends State<EventListWidget> {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => EventDetailsWidget(EventModel: eventModel),
+           builder: (context) => EventDetailsWidget(eventModel:eventModel),
+              //builder: (context) => new EventDetailsWidget()
           ),
         );
       },
@@ -173,3 +175,4 @@ class _EventListWidget extends State<EventListWidget> {
     );
   }
 }
+
