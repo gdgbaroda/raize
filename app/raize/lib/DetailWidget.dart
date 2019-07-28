@@ -4,7 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:raize/QRScanAPI.dart';
 import 'package:simple_permissions/simple_permissions.dart';
 import 'package:barcode_scan/barcode_scan.dart';
-
+import 'package:url_launcher/url_launcher.dart';
 import 'models/EventModel.dart';
 
 class DetailWidget extends StatefulWidget {
@@ -58,77 +58,86 @@ class _MyAppState extends State<DetailWidget> {
             "Navigation",
             textAlign: TextAlign.center,
           ),
-          onPressed: () {},
-        ),
-        RaisedButton(
-            textColor: Colors.blue,
-            child: new Text("Check In"),
-            onPressed: scan //scanOrDisable(true),
-        ),
-        new Row(
-          children: <Widget>[
-            new Text(
-              '$_reader',
-              softWrap: true,
-              style: new TextStyle(fontSize: 20.0, color: _resultColor),
-            ),
-            new Image(
-              image: _statusImg,
-              height: 50,
-              width: 50,
-              fit: BoxFit.fill,
-            ),
-          ],
-        ),
-      ],
-    );
-  }
-
-  requestPermission() async {
-    PermissionStatus result =
-    await SimplePermissions.requestPermission(permission);
-    setState(
-          () => new SnackBar(
-        backgroundColor: Colors.red,
-        content: new Text(" $result"),
-      ),
-    );
-  }
-
-  scan() async {
-    try {
-      String reader = await BarcodeScanner.scan();
-
-      if (!mounted) {
-        return;
-      }
-      bool userAuthenticated = await QRScanAPI.checkIn(reader);
-      setState(() => showScanResults(userAuthenticated));
-    } on PlatformException catch (e) {
-      if (e.code == BarcodeScanner.CameraAccessDenied) {
-        requestPermission();
-      } else {
-        setState(() => _reader = "unknown exception $e");
-      }
-    } on FormatException {
-      setState(() => () => new SnackBar(
-        backgroundColor: Colors.red,
-        content: new Text("Scan Cancelled!"),
-      ));
-    } catch (e) {
-      setState(() => _reader = 'Unknown error: $e');
-    }
-  }
-
-  showScanResults(bool userAuthenticated) {
-    if (userAuthenticated) {
-      this._reader = "Approved..";
-      this._resultColor = Colors.green;
-      _statusImg = new AssetImage('assets/img_approved_candidate.jpeg');
-    } else {
-      this._reader = "Please contact Orgnaizer!";
-      this._resultColor = Colors.red;
-      _statusImg = new AssetImage('assets/img_rejected_candidate.jpeg');
-    }
-  }
+          onPressed: _launchMapsUrl,
+                  ),
+                  RaisedButton(
+                      textColor: Colors.blue,
+                      child: new Text("Check In"),
+                      onPressed: scan //scanOrDisable(true),
+                  ),
+                  new Row(
+                    children: <Widget>[
+                      new Text(
+                        '$_reader',
+                        softWrap: true,
+                        style: new TextStyle(fontSize: 20.0, color: _resultColor),
+                      ),
+                      new Image(
+                        image: _statusImg,
+                        height: 50,
+                        width: 50,
+                        fit: BoxFit.fill,
+                      ),
+                    ],
+                  ),
+                ],
+              );
+            }
+          
+            requestPermission() async {
+              PermissionStatus result =
+              await SimplePermissions.requestPermission(permission);
+              setState(
+                    () => new SnackBar(
+                  backgroundColor: Colors.red,
+                  content: new Text(" $result"),
+                ),
+              );
+            }
+          
+            scan() async {
+              try {
+                String reader = await BarcodeScanner.scan();
+          
+                if (!mounted) {
+                  return;
+                }
+                bool userAuthenticated = await QRScanAPI.checkIn(reader);
+                setState(() => showScanResults(userAuthenticated));
+              } on PlatformException catch (e) {
+                if (e.code == BarcodeScanner.CameraAccessDenied) {
+                  requestPermission();
+                } else {
+                  setState(() => _reader = "unknown exception $e");
+                }
+              } on FormatException {
+                setState(() => () => new SnackBar(
+                  backgroundColor: Colors.red,
+                  content: new Text("Scan Cancelled!"),
+                ));
+              } catch (e) {
+                setState(() => _reader = 'Unknown error: $e');
+              }
+            }
+          
+            showScanResults(bool userAuthenticated) {
+              if (userAuthenticated) {
+                this._reader = "Approved..";
+                this._resultColor = Colors.green;
+                _statusImg = new AssetImage('assets/img_approved_candidate.jpeg');
+              } else {
+                this._reader = "Please contact Orgnaizer!";
+                this._resultColor = Colors.red;
+                _statusImg = new AssetImage('assets/img_rejected_candidate.jpeg');
+              }
+            }
+          
+            _launchMapsUrl() async{
+              final url = 'https://goo.gl/maps/3D42ABqcuTG6t9kLA';
+ if (await canLaunch(url)) {
+   await launch(url);
+ } else {
+   throw 'Could not launch $url';
+ }
+            }
 }
