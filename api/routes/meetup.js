@@ -17,14 +17,26 @@ passport.use(new MeetupOAuth2Strategy({
     return done(null, profile);
 }));
 
-//for authentication on meetup
+
+/**
+ * @swagger
+ * /auth:
+ *    get:
+ *      description: Will redirect use to authorize their meetup account
+ */
 router.get('/auth',
     passport.authenticate('meetup', {session: true}),
     function (req, res) {
         return res.json(req.user);
     });
 
-//for authentication on meetup callback
+
+/**
+ * @swagger
+ * /callback:
+ *    get:
+ *      description: Handle callback to generate access token for the authorized meetup user
+ */
 router.get('/callback', function (req, res) {
     axios.post('https://secure.meetup.com/oauth2/access', {}, {
         params: {
@@ -44,7 +56,12 @@ router.get('/callback', function (req, res) {
     });
 });
 
-//fetching groups of authenticated user
+/**
+ * @swagger
+ * /groups:
+ *    get:
+ *      description: Get groups of the meetup user
+ */
 router.get('/groups', function (req, res) {
     let user = req.flash("user");
     // let access_token = user[0].access_token;
@@ -64,7 +81,12 @@ router.get('/groups', function (req, res) {
 
 });
 
-//fetching events of a group
+/**
+ * @swagger
+ * /:urlname:
+ *    get:
+ *      description: Get events by meetup group for which the user is member of
+ */
 router.get('/:urlname/', function (req, res) {
     let user = req.flash("user");
     // let access_token = user[0].access_token;
@@ -81,7 +103,12 @@ router.get('/:urlname/', function (req, res) {
     });
 });
 
-//fetching rsvp of an event
+/**
+ * @swagger
+ * /:urlname/:event_id/rsvp:
+ *    get:
+ *      description: Get rsvp list for a specific event
+ */
 router.get('/:urlname/:event_id/rsvp', function (req, res) {
     let user = req.flash("user");
 // let access_token = user[0].access_token;
