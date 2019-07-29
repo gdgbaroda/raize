@@ -52,7 +52,7 @@ class _MyAppState extends State<DetailWidget> {
             style: TextStyle(fontSize: 20),
           ),
         ),
-        const SizedBox(height: 200.0),
+        const SizedBox(height: 90.0),
         new Container(
           alignment: Alignment.bottomCenter,
           child: new SizedBox(
@@ -64,7 +64,7 @@ class _MyAppState extends State<DetailWidget> {
             ),
           ),
         ),
-        const SizedBox(height: 20.0),
+        const SizedBox(height: 10.0),
         new Container(
           alignment: Alignment.bottomCenter,
           child: new SizedBox(
@@ -76,6 +76,24 @@ class _MyAppState extends State<DetailWidget> {
             ),
           ),
         ),
+        const SizedBox(height: 30.0),
+        new Container(
+        child : new Row(
+          children: <Widget>[
+            new Text(
+              '$_reader',
+              softWrap: true,
+              style: new TextStyle(fontSize: 20.0, color: _resultColor),
+            ),
+            new Image(
+              image: _statusImg,
+              height: 50,
+              width: 50,
+              fit: BoxFit.fill,
+            ),
+          ],
+        ),
+        )
       ],
     );
   }
