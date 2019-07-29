@@ -1,0 +1,21 @@
+/api/.directory
+*~
+/api/.idea
+/api/.idea/*
+/api/env.json
+
+# npm
+/api/*.log
+/api/*.gz
+
+.directory
+*~
+.idea
+.idea/*
+
+# npm
+/api/node_modules
+/api/package-lock.json
+/api/yarn.lock
+*.log
+*.gz
