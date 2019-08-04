@@ -8,7 +8,7 @@ let session = require('express-session');
 let cookieParser = require('cookie-parser');
 let logger = require('morgan');
 
-let config = require('./config/config');
+let config = require('./config/env/env');
 // let meetupAuthRouter = require('./routes/meetup-auth');
 
 let meetupDataApi = require('./routes/meetup');
