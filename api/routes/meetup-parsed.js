@@ -1,13 +1,9 @@
 const express = require('express');
 const router = express.Router();
 let axios = require('axios');
-const mongoose = require('mongoose');
-let config = require('../config/config');
+let config = require('../config/env/env');
 const passport = require('passport');
 let MeetupOAuth2Strategy = require('passport-oauth2-meetup').Strategy;
-
-
-// mongoose.connect(config.MONGODB_CONNECTION, {useNewUrlParser: true});
 
 passport.use(new MeetupOAuth2Strategy({
     clientID: config.MEETUP_CLIENT_ID,

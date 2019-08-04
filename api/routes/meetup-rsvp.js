@@ -1,12 +1,6 @@
 const express = require('express');
 const router = express.Router();
 let axios = require('axios');
-const mongoose = require('mongoose');
-let config = require('../config/config');
-
-
-// mongoose.connect(config.MONGODB_CONNECTION, {useNewUrlParser: true});
-
 
 router.get('/:urlname/:event_id', function (req, res) {
     let user = req.flash("user");
