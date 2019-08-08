@@ -4,7 +4,7 @@ import 'package:raize/models/EventVenueModel.dart';
 import 'package:raize/models/HostModel.dart';
 
 class EventModel {
-  int id;
+  String id;
   String banner;
   String title;
   String description;

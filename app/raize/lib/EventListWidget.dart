@@ -4,6 +4,8 @@ import 'package:raize/models/EventModel.dart';
 import 'package:http/http.dart' as http;
 import 'package:raize/EventDetailsWidget.dart';
 
+import 'models/EventListModel.dart';
+
 class EventListWidget extends StatefulWidget {
   static String tag = 'eventList-screen';
 
@@ -12,13 +14,13 @@ class EventListWidget extends StatefulWidget {
 }
 
 class _EventListWidget extends State<EventListWidget> {
-  List<EventModel> _items = new List();
+  List<EventListModel> _items = new List();
 
 
   //add an item to the list
   void _addItem(item) {
     setState(() {
-      _items.add(EventModel.fromJson(item));
+      _items.add(EventListModel.fromJson(item));
     });
   }
 
@@ -26,7 +28,7 @@ class _EventListWidget extends State<EventListWidget> {
   void initState() {
     super.initState();
     //this will be called at the start of the activity,it will add dummy data to our list
-    for (var i =0;i<15;i++){
+    for (var i =0;i<3;i++){
 
       _addItem({
         "id":"4253ff73-99c2-4cfa-b785-7cbb8c4c0a8f",
@@ -188,6 +190,31 @@ class _EventListWidget extends State<EventListWidget> {
     }
   }
 
+  //creates view for each item in listview
+  Widget _createEventsParentItem(BuildContext context, EventListModel eventList) {
+    return new  Column(
+        children: <Widget>[
+          Padding(
+              padding: new EdgeInsets.all(8.0),
+              child: new Row(
+                children: <Widget>[
+                  Text(eventList.title),
+                  Expanded(
+                    child: ListView.builder(
+                      padding: new EdgeInsets.all(8.0),
+                      itemCount: eventList.events.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        return _createEventItem(context, eventList.events[index]);
+                      },
+                    ),),
+                ],
+              )),
+
+          new Divider(height: 15.0,color: Colors.black,),
+
+        ],
+      );
+  }
 
   //creates view for each item in listview
   Widget _createEventItem(BuildContext context, EventModel eventModel) {
@@ -271,7 +298,7 @@ class _EventListWidget extends State<EventListWidget> {
                   padding: new EdgeInsets.all(8.0),
                   itemCount: _items.length,
                   itemBuilder: (BuildContext context, int index) {
-                    return _createEventItem(context, _items[index]);
+                    return _createEventsParentItem(context, _items[index]);
                   },
                 ),
               ),
