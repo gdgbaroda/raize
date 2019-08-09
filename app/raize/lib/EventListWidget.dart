@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:raize/models/EventModel.dart';
-import 'package:http/http.dart' as http;
 import 'package:raize/EventDetailsWidget.dart';
 
 import 'models/EventListModel.dart';
@@ -202,6 +201,7 @@ class _EventListWidget extends State<EventListWidget> {
                   Expanded(
                     child: ListView.builder(
                       padding: new EdgeInsets.all(8.0),
+                      shrinkWrap: true,
                       itemCount: eventList.events.length,
                       itemBuilder: (BuildContext context, int index) {
                         return _createEventItem(context, eventList.events[index]);
@@ -296,6 +296,7 @@ class _EventListWidget extends State<EventListWidget> {
               child: Card(
                 child: ListView.builder(
                   padding: new EdgeInsets.all(8.0),
+                  shrinkWrap: true,
                   itemCount: _items.length,
                   itemBuilder: (BuildContext context, int index) {
                     return _createEventsParentItem(context, _items[index]);
