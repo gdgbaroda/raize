@@ -192,23 +192,18 @@ class _EventListWidget extends State<EventListWidget> {
   //creates view for each item in listview
   Widget _createEventsParentItem(BuildContext context, EventListModel eventList) {
     return new  Column(
-        children: <Widget>[
-          Padding(
-              padding: new EdgeInsets.all(8.0),
-              child: new Row(
                 children: <Widget>[
                   Text(eventList.title),
-                  Expanded(
-                    child: ListView.builder(
+                  ListView.builder(
                       padding: new EdgeInsets.all(8.0),
                       shrinkWrap: true,
-                      itemCount: eventList.events.length,
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemCount: eventList.events.length,
                       itemBuilder: (BuildContext context, int index) {
                         return _createEventItem(context, eventList.events[index]);
                       },
-                    ),),
-                ],
-              )),
+                    ),
+
 
           new Divider(height: 15.0,color: Colors.black,),
 
@@ -293,7 +288,6 @@ class _EventListWidget extends State<EventListWidget> {
         child: new Column(
           children: <Widget>[
             new Expanded(
-              child: Card(
                 child: ListView.builder(
                   padding: new EdgeInsets.all(8.0),
                   shrinkWrap: true,
@@ -302,7 +296,6 @@ class _EventListWidget extends State<EventListWidget> {
                     return _createEventsParentItem(context, _items[index]);
                   },
                 ),
-              ),
             )
           ],
         ),
