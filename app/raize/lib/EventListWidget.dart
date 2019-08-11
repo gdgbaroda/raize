@@ -192,8 +192,18 @@ class _EventListWidget extends State<EventListWidget> {
   //creates view for each item in listview
   Widget _createEventsParentItem(BuildContext context, EventListModel eventList) {
     return new  Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Text(eventList.title),
+                Padding(
+                padding: const EdgeInsets.fromLTRB(8,0,0,0),
+                child: Text(
+                  eventList.title,
+                  style: new TextStyle(
+                    fontSize: 14.0,
+                    color: Colors.grey,
+                  ),
+                  textAlign: TextAlign.left,)
+                ),
                   ListView.builder(
                       padding: new EdgeInsets.all(8.0),
                       shrinkWrap: true,
@@ -205,7 +215,7 @@ class _EventListWidget extends State<EventListWidget> {
                     ),
 
 
-          new Divider(height: 15.0,color: Colors.black,),
+//          new Divider(height: 15.0,color: Colors.black,),
 
         ],
       );
@@ -225,22 +235,24 @@ class _EventListWidget extends State<EventListWidget> {
       },
       child: Column(
         children: <Widget>[
-          Padding(
-              padding: new EdgeInsets.all(8.0),
-              child: new Row(
-                children: <Widget>[
-                  new Image.network(eventModel.banner,
-                      height: 80.0, width: 80.0, fit: BoxFit.fitHeight),
-                  Expanded(
-                      child: Container(
-                        height: 80.0,
-                        margin: EdgeInsets.symmetric(horizontal: 8.0),
-                        child: _createEventItemDescriptionSection(context, eventModel),
-                      )),
-                ],
+          Card(
+            child: Padding(
+          padding: new EdgeInsets.all(8.0),
+                child: Row(
+                  children: <Widget>[
+                    new Image.network(eventModel.banner,
+                        height: 80.0, width: 80.0, fit: BoxFit.fitHeight),
+                    Expanded(
+                        child: Container(
+                          height: 80.0,
+                          margin: EdgeInsets.symmetric(horizontal: 8.0),
+                          child: _createEventItemDescriptionSection(context, eventModel),
+                        )),
+                  ],
+                )
               )),
 
-          new Divider(height: 15.0,color: Colors.black,),
+//          new Divider(height: 15.0,color: Colors.black,),
 
         ],
       ),
