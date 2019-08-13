@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:raize/SignInWidget.dart';
+import 'package:raize/sign_in.dart';
 import 'package:raize/SplashWidget.dart';
 
 void main() => runApp(MyApp());

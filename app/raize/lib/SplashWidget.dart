@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:raize/SignInWidget.dart';
+import 'package:raize/sign_in.dart';
 
 class SplashWidget extends StatefulWidget {
   static String tag = 'splash-screen';
