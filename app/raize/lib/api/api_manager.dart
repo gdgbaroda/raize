@@ -1,17 +1,30 @@
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
+import 'package:raize/shared_pref.dart';
 import 'package:raize/utility/urls.dart';
 
 class APIManager {
   static Future<bool> getAccessToken(String code) async {
-    await http.get(URLs.URL_CALLBACK + "/?code=" + code).then((response) {
-      var convertedData = jsonDecode(response.body);
-      //print("response $convertedData");
-//      var token = convertedData["access_token"];
-//      print("access_token $token");
+    return await http
+        .get(URLs.URL_CALLBACK_TOKEN + "/?code=" + code)
+        .then((response) {
+      if (response != null) {
+        var convertedData = jsonDecode(response.body);
+        if (convertedData != null) {
+          print("response $convertedData");
+          SharedPref.setAccessToken(convertedData["access_token"]);
+          SharedPref.setRefreshToken(convertedData["refresh_token"]);
+          SharedPref.setTokenType(convertedData["token_type"]);
+          SharedPref.setTokenExpiryTime(convertedData["expires_in"]);
 
-      return true;
+          return true;
+        } else {
+          return false;
+        }
+      } else {
+        return false;
+      }
     });
   }
 }

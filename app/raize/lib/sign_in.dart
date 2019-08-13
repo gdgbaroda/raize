@@ -28,9 +28,11 @@ class _SignInWidget extends State<SignInWidget> {
 
         SharedPref.setMeetupCode(code);
 
-        Future<bool> success = APIManager.getAccessToken(code);
-
-        _redirectToHome();
+        APIManager.getAccessToken(code).then((isSuccess) {
+          if (isSuccess) {
+            _redirectToHome();
+          }
+        });
       }
     });
   }
