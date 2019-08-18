@@ -1,5 +1,5 @@
-import 'EventModel.dart';
-import 'Location.dart';
+import 'event_model.dart';
+import 'location.dart';
 
 class EventListItemModel {
   String id;

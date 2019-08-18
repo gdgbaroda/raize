@@ -1,24 +1,31 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:raize/EventDetailsWidget.dart';
+import 'package:raize/sign_in.dart';
+import 'package:raize/shared_pref.dart';
+import 'package:raize/event_list_screen.dart';
 
-class SignInWidget extends StatefulWidget {
-  static String tag = 'signin-screen';
+class SplashWidget extends StatefulWidget {
+  static String tag = 'splash-screen';
+
   @override
-  _SignInWidget createState() => _SignInWidget();
+  _SplashWidget createState() => _SplashWidget();
 }
 
-class _SignInWidget extends State<SignInWidget> {
+class _SplashWidget extends State<SplashWidget> {
   @override
   void initState() {
     super.initState();
-
-    /*Timer(Duration(seconds: 2), () => Navigator.push(
-      context,
-      MaterialPageRoute(
-       // builder: (context) => new EventDetailWidget())
-    ));*/
+    Timer(
+        Duration(seconds: 5),
+        () => Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: SharedPref.getAccessToken() == ""
+                      ? (context) => SignInWidget()
+                      : (context) => EventListWidget() //goes to the next page
+                  ),
+            ));
   }
 
   @override
@@ -34,12 +41,12 @@ class _SignInWidget extends State<SignInWidget> {
             mainAxisAlignment: MainAxisAlignment.start,
             children: <Widget>[
               Expanded(
-                child: Container(//todo add ui here
+                child: Container(
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
                       Text(
-                        "Sign In Screen",
+                        "Splash",
                         style: TextStyle(
                             color: Colors.grey,
                             fontWeight: FontWeight.bold,

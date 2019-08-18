@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
-import 'dart:async';
 import 'package:flutter/services.dart';
-import 'package:raize/QRScanAPI.dart';
+import 'package:raize/qr_scan_api.dart';
 import 'package:simple_permissions/simple_permissions.dart';
 import 'package:barcode_scan/barcode_scan.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'models/EventModel.dart';
+import 'models/event_model.dart';
 
 class DetailWidget extends StatefulWidget {
   final EventModel eventModel;

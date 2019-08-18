@@ -1,7 +1,7 @@
-import 'package:raize/models/AttendeeModel.dart';
-import 'package:raize/models/EventDurationModel.dart';
-import 'package:raize/models/EventVenueModel.dart';
-import 'package:raize/models/HostModel.dart';
+import 'package:raize/models/attendee_model.dart';
+import 'package:raize/models/event_duration_model.dart';
+import 'package:raize/models/event_venue_model.dart';
+import 'package:raize/models/host_model.dart';
 
 class EventModel {
   String id;

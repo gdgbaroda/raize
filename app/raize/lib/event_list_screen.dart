@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:raize/models/EventModel.dart';
-import 'package:raize/EventDetailsWidget.dart';
+import 'package:raize/models/event_model.dart';
+import 'package:raize/event_details_widget.dart';
 
-import 'models/EventListItemModel.dart';
-import 'models/EventListModel.dart';
+import 'models/event_list_item_model.dart';
+import 'models/event_list_model.dart';
 
 class EventListWidget extends StatefulWidget {
   static String tag = 'eventList-screen';

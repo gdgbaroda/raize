@@ -1,6 +1,5 @@
 let createError = require('http-errors');
 let express = require('express');
-const swaggerDoc = require('./swaggerDoc');
 let path = require('path');
 let flash = require('connect-flash');
 
@@ -8,7 +7,7 @@ let session = require('express-session');
 let cookieParser = require('cookie-parser');
 let logger = require('morgan');
 
-let config = require('./config/env/env');
+let config = require('./config/config');
 // let meetupAuthRouter = require('./routes/meetup-auth');
 
 let meetupDataApi = require('./routes/meetup');
@@ -18,6 +17,7 @@ let meetupDataApiParsed = require('./routes/meetup-parsed');
 // let meetupGroupList = require('./routes/meetup-groups-list');
 // let meetupEventsList = require('./routes/meetup-event-list');
 // let meetupRsvp = require('./routes/meetup-rsvp');
+
 
 const PORT = 8080;
 const HOST = '0.0.0.0';
@@ -48,7 +48,6 @@ app.use(flash());
 app.use('/meetup/', meetupDataApi);
 app.use('/meetup/parsed/', meetupDataApiParsed);
 
-swaggerDoc(app);
 
 // app.use('/meetup/me/groups', meetupGroupList);
 // app.use('/meetup/events', meetupEventsList);

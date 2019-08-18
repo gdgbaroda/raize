@@ -1,4 +1,4 @@
-import 'package:raize/models/DateTimeModel.dart';
+import 'package:raize/models/date_time_model.dart';
 
 class EventDurationModel {
   DateTimeModel start,end;

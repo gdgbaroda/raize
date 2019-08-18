@@ -1,4 +1,4 @@
-import 'package:raize/models/AttendeeStateModel.dart';
+import 'package:raize/models/attendee_state_model.dart';
 
 class AttendeeModel {
   String fullname;

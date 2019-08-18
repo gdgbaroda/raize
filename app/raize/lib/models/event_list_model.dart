@@ -1,4 +1,4 @@
-import 'EventListItemModel.dart';
+import 'event_list_item_model.dart';
 
 class EventListModel {
   List<EventListItemModel> events;
