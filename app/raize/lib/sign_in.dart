@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
+import 'package:raize/event_list_screen.dart';
 import 'package:raize/shared_pref.dart';
 import 'package:raize/utility/urls.dart';
 
@@ -30,7 +31,8 @@ class _SignInWidget extends State<SignInWidget> {
 
         APIManager.getAccessToken(code).then((isSuccess) {
           if (isSuccess) {
-            _redirectToHome();
+            flutterWebviewPlugin.close();
+            Navigator.of(context).pushNamed(EventListWidget.tag);
           }
         });
       }
@@ -108,8 +110,4 @@ class _SignInWidget extends State<SignInWidget> {
     ];
   }
 
-  void _redirectToHome() {
-    // Redirecting to Home
-    //Navigator.of(context).pushNamed('/home'); // todo: redirect to home
-  }
 }

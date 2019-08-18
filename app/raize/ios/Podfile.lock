@@ -3,7 +3,11 @@ PODS:
     - Flutter
     - MTBBarcodeScanner
   - Flutter (1.0.0)
+  - flutter_webview_plugin (0.0.1):
+    - Flutter
   - MTBBarcodeScanner (5.0.11)
+  - shared_preferences (0.0.1):
+    - Flutter
   - simple_permissions (0.0.1):
     - Flutter
   - url_launcher (0.0.1):
@@ -12,6 +16,8 @@ PODS:
 DEPENDENCIES:
   - barcode_scan (from `.symlinks/plugins/barcode_scan/ios`)
   - Flutter (from `.symlinks/flutter/ios`)
+  - flutter_webview_plugin (from `.symlinks/plugins/flutter_webview_plugin/ios`)
+  - shared_preferences (from `.symlinks/plugins/shared_preferences/ios`)
   - simple_permissions (from `.symlinks/plugins/simple_permissions/ios`)
   - url_launcher (from `.symlinks/plugins/url_launcher/ios`)
 
@@ -24,6 +30,10 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/barcode_scan/ios"
   Flutter:
     :path: ".symlinks/flutter/ios"
+  flutter_webview_plugin:
+    :path: ".symlinks/plugins/flutter_webview_plugin/ios"
+  shared_preferences:
+    :path: ".symlinks/plugins/shared_preferences/ios"
   simple_permissions:
     :path: ".symlinks/plugins/simple_permissions/ios"
   url_launcher:
@@ -32,7 +42,9 @@ EXTERNAL SOURCES:
 SPEC CHECKSUMS:
   barcode_scan: 33f586d02270046fc6559135038b34b5754eaa4f
   Flutter: 58dd7d1b27887414a370fcccb9e645c08ffd7a6a
+  flutter_webview_plugin: ed9e8a6a96baf0c867e90e1bce2673913eeac694
   MTBBarcodeScanner: f453b33c4b7dfe545d8c6484ed744d55671788cb
+  shared_preferences: 1feebfa37bb57264736e16865e7ffae7fc99b523
   simple_permissions: 149cd87a11f83c24bf99f6e8a82f9fc8b70be233
   url_launcher: 0067ddb8f10d36786672aa0722a21717dba3a298
 
