@@ -59,7 +59,7 @@ packages:
       name: flutter_webview_plugin
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.3.5"
+    version: "0.3.7"
   http:
     dependency: "direct main"
     description:
@@ -183,7 +183,7 @@ packages:
       name: url_launcher
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "5.1.1"
+    version: "5.1.2"
   vector_math:
     dependency: transitive
     description:
