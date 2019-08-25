@@ -17,15 +17,48 @@ passport.use(new MeetupOAuth2Strategy({
     return done(null, profile);
 }));
 
-//for authentication on meetup
+
+/**
+ * @swagger
+ * /auth:
+ *    get:
+ *      description: Will redirect use to authorize their meetup account
+ */
 router.get('/auth',
     passport.authenticate('meetup', {session: true}),
     function (req, res) {
         return res.json(req.user);
     });
 
-//for authentication on meetup callback
+
+/**
+ * @swagger
+ * /callback:
+ *    get:
+ *      description: Handle callback for the authorized meetup user
+ */
 router.get('/callback', function (req, res) {
+
+    if (req.query == {})
+        return res.json(false);
+
+    if (req.query.code == undefined)
+        return res.json(false);
+
+    // ensure the query parameter has a value
+    if (req.query.code != '')
+        return res.json(true);
+
+    return res.json(false);
+});
+
+/**
+ * @swagger
+ * /callback/token:
+ *    get:
+ *      description: Explicitly obtain access token for the meetup user
+ */
+router.get('/callback/token', function (req, res) {
     axios.post('https://secure.meetup.com/oauth2/access', {}, {
         params: {
             client_id: config.MEETUP_CLIENT_ID,
@@ -44,16 +77,20 @@ router.get('/callback', function (req, res) {
     });
 });
 
-//fetching groups of authenticated user
+/**
+ * @swagger
+ * /groups:
+ *    get:
+ *      description: Get groups of the meetup user
+ */
 router.get('/groups', function (req, res) {
-    let user = req.flash("user");
-    // let access_token = user[0].access_token;
-    let access_token = req.session.user.access_token;
-    axios.get('https://api.meetup.com/self/groups', {
-        headers: {
-            Authorization: "Bearer " + access_token,
-        }
-    }).then((data) => {
+    var bearerHeader = req.headers["authorization"];
+    axios.get('https://api.meetup.com/self/groups',
+        {
+            headers: {
+                Authorization: bearerHeader,
+            }
+        }).then((data) => {
 
         return res.json(data.data)
 
@@ -66,13 +103,12 @@ router.get('/groups', function (req, res) {
 
 //fetching events of a group
 router.get('/:urlname/', function (req, res) {
-    let user = req.flash("user");
-    // let access_token = user[0].access_token;
-    let access_token = req.session.user.access_token;
+
+    var bearerHeader = req.headers["authorization"];
 
     axios.get(`https://api.meetup.com/${req.params.urlname}/events`, {
         headers: {
-            Authorization: "Bearer " + access_token,
+            Authorization: bearerHeader,
         }
     }).then((data) => {
         return res.json(data.data)
@@ -81,15 +117,19 @@ router.get('/:urlname/', function (req, res) {
     });
 });
 
-//fetching rsvp of an event
+/**
+ * @swagger
+ * /:urlname/:event_id/rsvp:
+ *    get:
+ *      description: Get rsvp list for a specific event
+ */
 router.get('/:urlname/:event_id/rsvp', function (req, res) {
-    let user = req.flash("user");
-// let access_token = user[0].access_token;
-    let access_token = req.session.user.access_token;
+
+    var bearerHeader = req.headers["authorization"];
 
     axios.get(`https://api.meetup.com/${req.params.urlname}/events/${req.params.event_id}/rsvps`, {
         headers: {
-            Authorization: "Bearer " + access_token,
+            Authorization: bearerHeader,
         }
     }).then((data) => {
         return res.json(data.data)
