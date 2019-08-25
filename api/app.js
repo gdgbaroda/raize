@@ -46,7 +46,7 @@ app.use(flash());
 // app.use('/', meetupAuthRouter);
 
 app.use('/meetup/', meetupDataApi);
-app.use('/qr-code/', meetupDataApi);
+app.use('/qr-code/', qrcodeApi);
 app.use('/meetup/parsed/', meetupDataApiParsed);
 
 
