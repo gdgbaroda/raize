@@ -14,14 +14,17 @@ class SplashWidget extends StatefulWidget {
 
 class _SplashWidget extends State<SplashWidget> {
   @override
-  void initState() {
+  initState() {
     super.initState();
+//    var temp = await SharedPref.getAccessToken();
+    var temp;
+    SharedPref.getAccessToken().then(temp);
     Timer(
         Duration(seconds: 5),
         () => Navigator.push(
               context,
               MaterialPageRoute(
-                  builder: SharedPref.getAccessToken() == ""
+                  builder: temp == null || temp ==""
                       ? (context) => SignInWidget()
                       : (context) => EventListWidget() //goes to the next page
                   ),
