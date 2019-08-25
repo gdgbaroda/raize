@@ -11,7 +11,7 @@ let config = require('./config/config');
 // let meetupAuthRouter = require('./routes/meetup-auth');
 
 let meetupDataApi = require('./routes/meetup');
-
+let qrcodeApi = require('./routes/qr-code');
 let meetupDataApiParsed = require('./routes/meetup-parsed');
 
 // let meetupGroupList = require('./routes/meetup-groups-list');
@@ -46,6 +46,7 @@ app.use(flash());
 // app.use('/', meetupAuthRouter);
 
 app.use('/meetup/', meetupDataApi);
+app.use('/qr-code/', qrcodeApi);
 app.use('/meetup/parsed/', meetupDataApiParsed);
 
 
