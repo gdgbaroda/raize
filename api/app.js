@@ -42,17 +42,9 @@ app.use(session({
 }));
 app.use(flash());
 
-
-// app.use('/', meetupAuthRouter);
-
-app.use('/meetup/', meetupDataApi);
+//app.use('/meetup/source', meetupDataApi);
 app.use('/qr-code/', qrcodeApi);
-app.use('/meetup/parsed/', meetupDataApiParsed);
-
-
-// app.use('/meetup/me/groups', meetupGroupList);
-// app.use('/meetup/events', meetupEventsList);
-// app.use('/meetup/rsvp', meetupRsvp);
+app.use('/meetup/', meetupDataApiParsed);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

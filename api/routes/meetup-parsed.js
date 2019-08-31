@@ -70,14 +70,17 @@ router.get('/callback/token', function (req, res) {
     });
 });
 
-//fetching groups of authenticated user
-router.get('/groups', async function (req, res) {
+/**
+ * @swagger
+ * /events:
+ *    get:
+ *      description: Get events by group on meetup.com
+ */
+router.get('/events', async function (req, res) {
 
     var bearerHeader = req.headers["authorization"];
 
     let parsed_group_data = [];
-    let parsed_events_data = [];
-    let i = 0;
 
     await axios.get('https://api.meetup.com/self/groups', {
         headers: {
@@ -87,19 +90,26 @@ router.get('/groups', async function (req, res) {
 
         for(let group of groups.data)
         {
-            let events = await GetEvents(group.urlname, bearerHeader)
+            console.log('Group: ' + JSON.stringify(group))
 
-            console.log('Events: ' + JSON.stringify(events))
+            let events = await GetEvents(group.urlname, bearerHeader)
 
             if(JSON.stringify(events) !== '[]')
             {
+                let photo_url = "";
+
+                if(group.group_photo != undefined)
+                    photo_url = group.group_photo.thumb_link
+
                 parsed_group_data.push({
+
+                    id:group.id,
                     title: group.name,
                     source: "meetup",
+                    thumbnail: photo_url,
                     location: group.localized_location,
                     events: events,
-                    lastUpdatedOn: group.updated,
-                    isActive: group.status,
+                    lastUpdatedOn: group.updated
                 });
             }
         }
@@ -112,39 +122,7 @@ router.get('/groups', async function (req, res) {
 
 });
 
-//fetching events of a group
-router.get('/:urlname/', function (req, res) {
-    
-    var bearerHeader = req.headers["authorization"];
-
-    axios.get(`https://api.meetup.com/${req.params.urlname}/events`, {
-        headers: {
-            Authorization: bearerHeader
-        }
-    }).then((data) => {
-        return res.json(data.data)
-    }).catch((error) => {
-        console.error(error)
-    });
-});
-
-//fetching rsvp of an event
-router.get('/:urlname/:event_id/rsvp', function (req, res) {
-
-    var bearerHeader = req.headers["authorization"];
-
-    axios.get(`https://api.meetup.com/${req.params.urlname}/events/${req.params.event_id}/rsvps`, {
-        headers: {
-            Authorization: bearerHeader
-        }
-    }).then((data) => {
-        return res.json(data.data)
-    }).catch((error) => {
-        console.error(error)
-    });
-
-});
-
+// get events by urlname (name of group as given my meetup.com)
 async function GetEvents(urlname, tokenHeader) {
     try 
     {
@@ -162,18 +140,18 @@ async function GetEvents(urlname, tokenHeader) {
             {
                 let events_by_host = await GetEventsByHost(event.id, urlname, tokenHeader)
 
-                console.log('event ' + JSON.stringify(event));
+                // console.log('event ' + JSON.stringify(event.description_images));
 
                 if(JSON.stringify(events_by_host) !== '{}')
                 {
                     parsed_events.push({
-
+                        
+                        id: event.id,
                         title: event.name,
                         host:true,
                         description: event.description,
                         venue: event.venue,
-                        duration: event.duration,
-                        isActive: true
+                        duration: event.duration
     
                     })
                 }
@@ -181,13 +159,12 @@ async function GetEvents(urlname, tokenHeader) {
                 {
                     parsed_events.push({
 
+                        id: event.id,
                         title: event.name,
                         host:false,
                         description: event.description,
                         venue: event.venue,
-                        duration: event.duration,
-                        isActive: true
-    
+                        duration: event.duration
                     })
                 }
             }
@@ -204,6 +181,7 @@ async function GetEvents(urlname, tokenHeader) {
     }
 }
 
+// get events by host (compare by the logged in user meetup user id)
 async function GetEventsByHost(event_id, urlname, tokenHeader) {
     try 
     {
@@ -255,6 +233,7 @@ async function GetEventsByHost(event_id, urlname, tokenHeader) {
     }
 }
 
+// get the meetup.com profile for the logged in user
 async function GetProfile(tokenHeader) {
     try 
     {
@@ -263,8 +242,6 @@ async function GetProfile(tokenHeader) {
                 Authorization: tokenHeader
             }
         });
-
-        console.log('Member profile: ' + JSON.stringify(response.data))
 
         return response.data;
 
