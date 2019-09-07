@@ -5,9 +5,11 @@ const mongoose = require('mongoose');
 let config = require('../config/config');
 const passport = require('passport');
 let MeetupOAuth2Strategy = require('passport-oauth2-meetup').Strategy;
-
+// var instamojoWebhook = require("instamojo-webhook");
 
 mongoose.connect(config.MONGODB_CONNECTION, {useNewUrlParser: true});
+
+// var instamojoMiddleWare = instamojoWebhook({ secretKey: 'cb50d23c46e5470580dca78a50b3c10a'});
 
 passport.use(new MeetupOAuth2Strategy({
     clientID: config.MEETUP_CLIENT_ID,
@@ -16,6 +18,12 @@ passport.use(new MeetupOAuth2Strategy({
 }, function (accessToken, refreshToken, profile, done) {
     return done(null, profile);
 }));
+
+// router.post("/instamojo/payment",instamojoMiddleWare,function(req,res)
+// {
+//     console.log(req.instamojo);
+//     res.send("hello");
+// });
 
 //for authentication on meetup
 router.get('/auth',
@@ -37,7 +45,7 @@ router.get('/callback', function (req, res) {
 
     if (req.query.code == undefined)
         return res.json(false);
-
+    
     // ensure the query parameter has a value
     if (req.query.code != '')
         return res.json(true);
