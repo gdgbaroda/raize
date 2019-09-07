@@ -11,13 +11,12 @@ let config = require('./config/config');
 // let meetupAuthRouter = require('./routes/meetup-auth');
 
 let meetupDataApi = require('./routes/meetup');
-let qrcodeApi = require('./routes/qr-code');
+let ticketsApi = require('./routes/tickets');
 let meetupDataApiParsed = require('./routes/meetup-parsed');
 
 // let meetupGroupList = require('./routes/meetup-groups-list');
 // let meetupEventsList = require('./routes/meetup-event-list');
 // let meetupRsvp = require('./routes/meetup-rsvp');
-
 
 const PORT = 8080;
 const HOST = '0.0.0.0';
@@ -40,10 +39,11 @@ app.use(session({
     resave: false,
     saveUninitialized: false
 }));
+
 app.use(flash());
 
 //app.use('/meetup/source', meetupDataApi);
-app.use('/qr-code/', qrcodeApi);
+app.use('/tickets/', ticketsApi);
 app.use('/meetup/', meetupDataApiParsed);
 
 // catch 404 and forward to error handler
