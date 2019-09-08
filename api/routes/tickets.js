@@ -110,4 +110,14 @@ router.get('/status/:paymentid/', async function (req, res) {
     
 });
 
+// date is of format DD-MM-YYYY without prefix 0
+// example: for date such as 08-09-2019, the actual file name is 8-9-2019
+router.get('/checkins/:date/', async function (req, res) {
+
+    const file = `./data/${req.params.date}.csv`;
+  
+    res.download(file);
+    
+});
+
 module.exports = router;
