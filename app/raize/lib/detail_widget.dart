@@ -70,7 +70,8 @@ class _MyAppState extends State<DetailWidget> {
             width: 350.0,
             height: 50.0,
             child: new RaisedButton(
-              child: new Text('Check In'),
+              child:
+              (eventModel.host)?new Text('Scan') :SizedBox(),
               onPressed: scan,
             ),
           ),
