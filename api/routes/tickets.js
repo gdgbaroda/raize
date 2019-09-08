@@ -5,7 +5,7 @@ const express = require('express');
 const router = express.Router();
 let axios = require('axios');
 const sgMail = require('@sendgrid/mail');
-const createCSV = require('./test-csv');
+const createCSV = require('../helpers/csv-writer');
 sgMail.setApiKey('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');
 const ticketsFromCsv = [];
 
