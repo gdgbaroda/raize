@@ -111,6 +111,7 @@ class _EventListWidget extends State<EventListWidget> {
                   ))),
 
 //          new Divider(height: 15.0,color: Colors.black,),
+
         ],
       ),
     );

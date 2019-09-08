@@ -12,7 +12,12 @@ class EventModel {
 
 //  EventDurationModel EventDurationModelduration;
 
-  EventModel({this.id, this.title, this.description, this.host, this.venue
+  EventModel(
+      {this.id,
+        this.title,
+        this.description,
+        this.host,
+        this.venue
 //        this.duration
       });
 
