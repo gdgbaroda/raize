@@ -1,7 +1,6 @@
 const csv = require('csv-parser');
 const fs = require('fs');
 const createCsvWriter = require('csv-writer').createObjectCsvWriter;
-var json2csv = require('json2csv');
 var newLine = "\r\n";
 var methods = {};
 
