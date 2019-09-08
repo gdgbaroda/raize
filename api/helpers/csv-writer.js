@@ -1,6 +1,6 @@
 const csv = require('csv-parser');
 const fs = require('fs');
-const createCsvWriter = require('api/helpers/csv-writer').createObjectCsvWriter;
+const createCsvWriter = require('csv-writer').createObjectCsvWriter;
 var methods = {};
 
 methods.CreateCSV = async function (data) {
