@@ -2,13 +2,12 @@ import 'event_model.dart';
 import 'location.dart';
 
 class EventListItemModel {
-  String id;
+  int id;
   String title;
   String source;
-  Location location;
+  String location;
   List<EventModel> events;
-  String lastUpdatedOn;
-  bool isactive;
+  String thumbnail;
 
   EventListItemModel(
       {this.id,
@@ -16,24 +15,20 @@ class EventListItemModel {
         this.source,
         this.location,
         this.events,
-        this.lastUpdatedOn,
-        this.isactive});
+        this.thumbnail});
 
   EventListItemModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     title = json['title'];
     source = json['source'];
-    location = json['location'] != null
-        ? new Location.fromJson(json['location'])
-        : null;
+    location = json['location'];
     if (json['events'] != null) {
       events = new List<EventModel>();
       json['events'].forEach((v) {
         events.add(new EventModel.fromJson(v));
       });
     }
-    lastUpdatedOn = json['lastUpdatedOn'];
-    isactive = json['isactive'];
+    thumbnail = json['thumbnail'];
   }
 
   Map<String, dynamic> toJson() {
@@ -41,14 +36,12 @@ class EventListItemModel {
     data['id'] = this.id;
     data['title'] = this.title;
     data['source'] = this.source;
-    if (this.location != null) {
-      data['location'] = this.location.toJson();
-    }
+      data['location'] = this.location;
+
     if (this.events != null) {
       data['events'] = this.events.map((v) => v.toJson()).toList();
     }
-    data['lastUpdatedOn'] = this.lastUpdatedOn;
-    data['isactive'] = this.isactive;
+    data['thumbnail'] = this.thumbnail;
     return data;
   }
 

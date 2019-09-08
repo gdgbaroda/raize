@@ -2,7 +2,6 @@
 *~
 /api/.idea
 /api/.idea/*
-/api/env.json
 
 # npm
 /api/*.log
