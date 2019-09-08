@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter_html/flutter_html.dart';
 import 'package:raize/api/api_manager.dart';
 import 'package:raize/models/event_model.dart';
 import 'package:raize/event_details_widget.dart';
@@ -36,13 +35,16 @@ class _EventListWidget extends State<EventListWidget> {
     super.initState();
     //this will be called at the start of the activity,it will add dummy data to our list
 
-    getDataFromApi() async {
-      var accessToken = await SharedPref.getAccessToken();
-      var temp = await APIManager.getEventsList(accessToken);
-      _addItem(temp);
-    }
+       // use the api manager to fetch upcoming events
+    APIManager.getEvents().then((result)
+    {
+        // print("Events from service: " + result.toJson().toString());
 
-    getDataFromApi();
+        // add the events (group wise) to the list of items
+        _addItem(result.toJson());
+
+    });
+
   }
 
   //creates view for each item in listview
@@ -134,13 +136,13 @@ class _EventListWidget extends State<EventListWidget> {
           ),
         ),
         SizedBox(height: 10.0),
-        Html(
-          data: eventModel.description,
-//          maxLines: 2,
-//          overflow: TextOverflow.ellipsis,
-//          style: TextStyle(
-//            fontSize: 13.0,
-//          ),
+        Text(
+          eventModel.description,
+          maxLines: 2,
+          overflow: TextOverflow.ellipsis,
+          style: TextStyle(
+            fontSize: 13.0,
+          )
         ),
       ],
     );
