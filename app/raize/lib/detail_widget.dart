@@ -31,12 +31,12 @@ class _MyAppState extends State<DetailWidget> {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        new Image.network(
-          eventModel.banner,
-          height: 150,
-          width: double.infinity,
-          fit: BoxFit.fitWidth,
-        ),
+//        new Image.network(
+//          eventModel.banner,//todo change it from new data model
+//          height: 150,
+//          width: double.infinity,
+//          fit: BoxFit.fitWidth,
+//        ),
         Padding(
           padding: const EdgeInsets.all(20.0),
           child: new Text(
@@ -44,13 +44,13 @@ class _MyAppState extends State<DetailWidget> {
             style: TextStyle(fontSize: 20),
           ),
         ),
-        Padding(
-          padding: const EdgeInsets.all(20.0),
-          child: new Text(
-            eventModel.duration.start.date,
-            style: TextStyle(fontSize: 20),
-          ),
-        ),
+//        Padding(
+//          padding: const EdgeInsets.all(20.0),
+//          child: new Text(
+//            eventModel.duration.start.date,
+//            style: TextStyle(fontSize: 20),
+//          ),
+//        ),
         const SizedBox(height: 90.0),
         new Container(
           alignment: Alignment.bottomCenter,

@@ -1,27 +1,52 @@
 class EventVenueModel {
-  String address;
+  int id;
+  String name;
+  double lat;
+  double lon;
+  bool repinned;
+  String address1;
+  String address2;
   String city;
-  String state;
   String country;
-  int pinCode;
+  String localizedCountryName;
 
-  EventVenueModel({this.address, this.city, this.state, this.country, this.pinCode});
+  EventVenueModel(
+      {this.id,
+        this.name,
+        this.lat,
+        this.lon,
+        this.repinned,
+        this.address1,
+        this.address2,
+        this.city,
+        this.country,
+        this.localizedCountryName});
 
   EventVenueModel.fromJson(Map<String, dynamic> json) {
-    address = json['address'];
+    id = json['id'];
+    name = json['name'];
+    lat = json['lat'];
+    lon = json['lon'];
+    repinned = json['repinned'];
+    address1 = json['address_1'];
+    address2 = json['address_2'];
     city = json['city'];
-    state = json['state'];
     country = json['country'];
-    pinCode = json['pinCode'];
+    localizedCountryName = json['localized_country_name'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['address'] = this.address;
+    data['id'] = this.id;
+    data['name'] = this.name;
+    data['lat'] = this.lat;
+    data['lon'] = this.lon;
+    data['repinned'] = this.repinned;
+    data['address_1'] = this.address1;
+    data['address_2'] = this.address2;
     data['city'] = this.city;
-    data['state'] = this.state;
     data['country'] = this.country;
-    data['pinCode'] = this.pinCode;
+    data['localized_country_name'] = this.localizedCountryName;
     return data;
   }
 }
