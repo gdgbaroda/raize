@@ -31,7 +31,10 @@ class _SignInWidget extends State<SignInWidget> {
 
         APIManager.getAccessToken(code).then((isSuccess) {
           if (isSuccess) {
+            // Note: This is required to hide webview.
             flutterWebviewPlugin.close();
+            flutterWebviewPlugin.dispose();
+
             Navigator.of(context).pushNamed(EventListWidget.tag);
           }
         });
