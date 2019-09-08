@@ -30,7 +30,7 @@ dependencies:
   barcode_scan: ^0.0.4
   url_launcher: ^5.1.1
 
-dev_dependencies:
+dev_dehpendencies:
   flutter_test:
     sdk: flutter
 
@@ -47,9 +47,7 @@ flutter:
   uses-material-design: true
   assets:
     - assets/person.jpeg
-    - assets/img_approved_candidate.jpeg
-    - assets/imp_pending_candidate.jpeg
-    - assets/img_rejected_candidate.jpeg
+
   #  - images/a_dot_burr.jpeg
   #  - images/a_dot_ham.jpeg
 
