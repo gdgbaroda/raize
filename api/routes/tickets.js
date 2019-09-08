@@ -5,6 +5,7 @@ const express = require('express');
 const router = express.Router();
 let axios = require('axios');
 const sgMail = require('@sendgrid/mail');
+const createCSV = require('../helpers/csv-writer');
 sgMail.setApiKey('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');
 const ticketsFromCsv = [];
 
@@ -43,7 +44,7 @@ router.get('/qrcode/email', async function (req, res) {
                 // note: it would show the qrcode for last item in the list of tickets
                 //return res.render("index", {qrcode: url});
 
-                require("fs").writeFile('qrcodes/' + id + '.png', base64Data, 'base64', function (err) 
+                require("fs").writeFile('qrcodes/' + id + '.png', base64Data, 'base64', function (err)
                 {
                     // structure the message
                     const msg = 
@@ -94,6 +95,7 @@ router.get('/status/:paymentid/', async function (req, res) {
         if(data.data['payment'] != null)
         {
             if(data.data['payment']['status'] === 'Credit')
+                createCSV.data.CreateCSV(data.data);
                 return res.json({status:true});
         }
 
