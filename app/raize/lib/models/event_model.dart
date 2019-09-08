@@ -2,6 +2,8 @@ import 'package:raize/models/attendee_model.dart';
 import 'package:raize/models/event_duration_model.dart';
 import 'package:raize/models/event_venue_model.dart';
 import 'package:raize/models/host_model.dart';
+import 'package:html/parser.dart' show parse;
+
 
 class EventModel {
   String id;
@@ -40,7 +42,7 @@ class EventModel {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['id'] = this.id;
     data['title'] = this.title;
-    data['description'] = this.description;
+    data['description'] = _parseHtmlString(this.description);
     data['host'] = this.host;
 
     if (this.venue != null) {
@@ -51,4 +53,14 @@ class EventModel {
 //    }
     return data;
   }
+
+    // parse the html string and strip out to next . (full stop) in the link
+    String _parseHtmlString(String htmlString) 
+    {
+        var document = parse(htmlString);
+
+        String parsedString = parse(document.body.text).documentElement.text;
+        return parsedString.substring(0, parsedString.indexOf('.'));
+    }
+
 }
