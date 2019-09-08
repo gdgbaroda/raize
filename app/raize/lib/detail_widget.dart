@@ -137,7 +137,7 @@ class _MyAppState extends State<DetailWidget> {
 
 
   _launchMapsUrl() async {
-    final url = 'https://goo.gl/maps/3D42ABqcuTG6t9kLA';
+    final url = 'https://www.google.com/maps/dir//Hotel+Sayaji,+Parshuram+Nagar,+Sayajiganj,+Vadodara,+Gujarat+390001/@22.305542,73.185483,20z/data=!4m8!4m7!1m0!1m5!1m1!1s0x395fcfb37f43d7b9:0xa4c63926d4354df0!2m2!1d73.1856699!2d22.3054179?hl=en';
     if (await canLaunch(url)) {
       await launch(url);
     } else {
