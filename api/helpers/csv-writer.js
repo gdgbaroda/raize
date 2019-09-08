@@ -11,6 +11,15 @@ methods.CreateCSV = async function (data) {
     var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
     var dateTime = date + ' ' + time;
     let path = `./data/${date}.csv`;
+    const records = [
+        {
+            event: data['payment']['link_title'],
+            payment_id: data['payment']['payment_id'],
+            name: data['payment']['buyer_name'],
+            email: data['payment']['buyer_email'],
+            check_in: dateTime,
+        },
+    ];
     if (!fs.existsSync(path)) {
         const csvWriter = createCsvWriter({
             path: path,
@@ -22,16 +31,6 @@ methods.CreateCSV = async function (data) {
                 {id: 'check_in', title: 'CHECK IN'}
             ]
         });
-
-        const records = [
-            {
-                event: data['payment']['link_title'],
-                payment_id: data['payment']['payment_id'],
-                name: data['payment']['buyer_name'],
-                email: data['payment']['buyer_email'],
-                check_in: dateTime,
-            },
-        ];
 
         csvWriter.writeRecords(records)       // returns a promise
             .then(() => {
@@ -49,16 +48,6 @@ methods.CreateCSV = async function (data) {
                 {id: 'check_in', title: 'CHECK IN'}
             ]
         });
-        const records = [
-            {
-                event: data['payment']['link_title'],
-                payment_id: data['payment']['payment_id'],
-                name: data['payment']['buyer_name'],
-                email: data['payment']['buyer_email'],
-                check_in: dateTime,
-            },
-        ];
-
         csvWriter.writeRecords(records)       // returns a promise
             .then(() => {
                 console.log('...Done');
