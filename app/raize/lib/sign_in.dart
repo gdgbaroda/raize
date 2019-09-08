@@ -21,7 +21,8 @@ class _SignInWidget extends State<SignInWidget> {
     FlutterWebviewPlugin flutterWebviewPlugin = FlutterWebviewPlugin();
 
     flutterWebviewPlugin.onUrlChanged.listen((String url) {
-      //print(url);getAccessToken
+
+      print(url);
 
       if (url.startsWith(URLs.URL_CALLBACK)) {
         String code = new RegExp("code=(.*)").firstMatch(url)?.group(1);
@@ -31,7 +32,10 @@ class _SignInWidget extends State<SignInWidget> {
 
         APIManager.getAccessToken(code).then((isSuccess) {
           if (isSuccess) {
+            // Note: This is required to hide webview.
             flutterWebviewPlugin.close();
+            flutterWebviewPlugin.dispose();
+
             Navigator.of(context).pushNamed(EventListWidget.tag);
           }
         });
@@ -40,20 +44,16 @@ class _SignInWidget extends State<SignInWidget> {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context) 
+  {
+    // explicity override the javascript feature and specify the user agent to avoid Google's 403 error
+    // Note: the current user agent specified is Chrome/56.x.x which may not work for iOS or certain Google device versions
     return WebviewScaffold(
       url: URLs.URL_AUTH,
+      withJavascript: true,
+      enableAppScheme: true,
+      userAgent: "Chrome/56.0.0.0 Mobile",
     );
-    /*return Scaffold(
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          mainAxisSize: MainAxisSize.max,
-          children: this.createBody(),
-        ),
-      ),
-      backgroundColor: Colors.white,
-    );*/
   }
 
   /// Creates the main body to show using the state variable values

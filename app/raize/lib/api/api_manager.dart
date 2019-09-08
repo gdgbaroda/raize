@@ -39,4 +39,22 @@ class APIManager {
       }
     });
   }
+
+  static Future<bool> validateUser(String code) async {
+    return await http
+        .get(URLs.URL_VERIFY_QR_CODE + code)
+        .then((response) {
+      if (response != null) {
+        var convertedData = jsonDecode(response.body);
+        if (convertedData != null) {
+          print("response $convertedData");
+          return convertedData["status"];
+        } else {
+          return false;
+        }
+      } else {
+        return false;
+      }
+    });
+  }
 }
