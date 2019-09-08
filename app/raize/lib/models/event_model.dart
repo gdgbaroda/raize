@@ -1,7 +1,7 @@
 import 'package:raize/models/attendee_model.dart';
 import 'package:raize/models/event_duration_model.dart';
 import 'package:raize/models/event_venue_model.dart';
-import 'package:html/parser.dart' show parse;
+import 'package:raize/models/host_model.dart';
 
 class EventModel {
   String id;
@@ -9,6 +9,7 @@ class EventModel {
   String description;
   bool host;
   EventVenueModel venue;
+
 //  EventDurationModel EventDurationModelduration;
 
   EventModel(
@@ -24,9 +25,12 @@ class EventModel {
     id = json['id'];
     title = json['title'];
     description = json['description'];
+
     host = json['host'];
 
-    venue = json['venue'] != null ? new EventVenueModel.fromJson(json['venue']) : null;
+    venue = json['venue'] != null
+        ? new EventVenueModel.fromJson(json['venue'])
+        : null;
 //    duration = json['duration'] != null
 //        ? new EventDurationModel.fromJson(json['duration'])
 //        : null;
@@ -36,7 +40,7 @@ class EventModel {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['id'] = this.id;
     data['title'] = this.title;
-    data['description'] = _parseHtmlString(this.description);
+    data['description'] = this.description;
     data['host'] = this.host;
 
     if (this.venue != null) {
@@ -46,13 +50,5 @@ class EventModel {
 //      data['duration'] = this.duration.toJson();
 //    }
     return data;
-  }
-
-  String _parseHtmlString(String htmlString) 
-  {
-      var document = parse(htmlString);
-
-      String parsedString = parse(document.body.text).documentElement.text;
-      return parsedString.substring(0, parsedString.indexOf('.'));
   }
 }

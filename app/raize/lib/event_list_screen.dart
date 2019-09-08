@@ -1,8 +1,12 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_html/flutter_html.dart';
 import 'package:raize/api/api_manager.dart';
 import 'package:raize/models/event_model.dart';
 import 'package:raize/event_details_widget.dart';
+import 'package:raize/shared_pref.dart';
 
 import 'models/event_list_item_model.dart';
 import 'models/event_list_model.dart';
@@ -16,13 +20,15 @@ class EventListWidget extends StatefulWidget {
 
 class _EventListWidget extends State<EventListWidget> {
   EventListModel _items;
-
-
+  bool _isLoading = true;
   //add an item to the list
   void _addItem(item) {
-    setState(() {
-      _items = EventListModel.fromJson(item);
-    });
+    if (item != null) {
+      setState(() {
+        _isLoading = false;
+        _items = EventListModel.fromJson(item);
+      });
+    }
   }
 
   @override
@@ -30,79 +36,79 @@ class _EventListWidget extends State<EventListWidget> {
     super.initState();
     //this will be called at the start of the activity,it will add dummy data to our list
 
-    // use the api manager to fetch upcoming events
-    APIManager.getEvents().then((result)
-    {
-        // print("Events from service: " + result.toJson().toString());
+    getDataFromApi() async {
+      var accessToken = await SharedPref.getAccessToken();
+      var temp = await APIManager.getEventsList(accessToken);
+      _addItem(temp);
+    }
 
-        // add the events (group wise) to the list of items
-        _addItem(result.toJson());
-
-    });
-
+    getDataFromApi();
   }
-  //creates view for each item in listview
-  Widget _createEventsParentItem(BuildContext context, EventListItemModel eventList) {
-    return new  Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                Padding(
-                padding: const EdgeInsets.fromLTRB(8,0,0,0),
-                child: Text(
-                  eventList.title,
-                  style: new TextStyle(
-                    fontSize: 14.0,
-                    color: Colors.grey,
-                  ),
-                  textAlign: TextAlign.left,)
-                ),
-                  ListView.builder(
-                      padding: new EdgeInsets.all(8.0),
-                      shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    itemCount: eventList.events.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        return _createEventItem(context, eventList.events[index],eventList.thumbnail);
-                      },
-                    ),
 
+  //creates view for each item in listview
+  Widget _createEventsParentItem(
+      BuildContext context, EventListItemModel eventList) {
+    return new Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Padding(
+            padding: const EdgeInsets.fromLTRB(8, 0, 0, 0),
+            child: Text(
+              eventList.title,
+              style: new TextStyle(
+                fontSize: 14.0,
+                color: Colors.grey,
+              ),
+              textAlign: TextAlign.left,
+            )),
+        ListView.builder(
+          padding: new EdgeInsets.all(8.0),
+          shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
+          itemCount: eventList.events.length,
+          itemBuilder: (BuildContext context, int index) {
+            return _createEventItem(
+                context, eventList.events[index], eventList.thumbnail);
+          },
+        ),
 
 //          new Divider(height: 15.0,color: Colors.black,),
-
-        ],
-      );
+      ],
+    );
   }
 
   //creates view for each item in listview
-  Widget _createEventItem(BuildContext context, EventModel eventModel, String thumbnail) {
-    return new GestureDetector( //listens for on tap
+  Widget _createEventItem(
+      BuildContext context, EventModel eventModel, String thumbnail) {
+    return new GestureDetector(
+      //listens for on tap
       onTap: () {
         Navigator.push(
           context,
           MaterialPageRoute(
-           builder: (context) => EventDetailsWidget(eventModel:eventModel),
-              //builder: (context) => new EventDetailsWidget()
+            builder: (context) => EventDetailsWidget(eventModel: eventModel),
+            //builder: (context) => new EventDetailsWidget()
           ),
         );
       },
       child: Column(
         children: <Widget>[
           Card(
-            child: Padding(
-          padding: new EdgeInsets.all(8.0),
-                child: Row(
-                  children: <Widget>[
-                    new Image.network(thumbnail,
-                        height: 80.0, width: 80.0, fit: BoxFit.fitHeight),
-                    Expanded(
-                        child: Container(
-                          height: 80.0,
-                          margin: EdgeInsets.symmetric(horizontal: 8.0),
-                          child: _createEventItemDescriptionSection(context, eventModel),
-                        )),
-                  ],
-                )
-              )),
+              child: Padding(
+                  padding: new EdgeInsets.all(8.0),
+                  child: Row(
+                    children: <Widget>[
+                      new Image.network(thumbnail,
+                          height: 80.0, width: 80.0, fit: BoxFit.fitHeight),
+                      Expanded(
+                          child: Container(
+                        height: 80.0,
+                        margin: EdgeInsets.symmetric(horizontal: 8.0),
+                        child: _createEventItemDescriptionSection(
+                            context, eventModel),
+                      )),
+                    ],
+                  ))),
 
 //          new Divider(height: 15.0,color: Colors.black,),
 
@@ -111,7 +117,8 @@ class _EventListWidget extends State<EventListWidget> {
     );
   }
 
-  Widget _createEventItemDescriptionSection(BuildContext context, EventModel eventModel) {
+  Widget _createEventItemDescriptionSection(
+      BuildContext context, EventModel eventModel) {
     return Column(
       mainAxisSize: MainAxisSize.max,
       mainAxisAlignment: MainAxisAlignment.start,
@@ -127,13 +134,13 @@ class _EventListWidget extends State<EventListWidget> {
           ),
         ),
         SizedBox(height: 10.0),
-        Text(
-          eventModel.description,
-          maxLines: 2,
-          overflow: TextOverflow.ellipsis,
-          style: TextStyle(
-            fontSize: 13.0,
-          ),
+        Html(
+          data: eventModel.description,
+//          maxLines: 2,
+//          overflow: TextOverflow.ellipsis,
+//          style: TextStyle(
+//            fontSize: 13.0,
+//          ),
         ),
       ],
     );
@@ -148,24 +155,30 @@ class _EventListWidget extends State<EventListWidget> {
       ),
       body: new Container(
         padding:
-        new EdgeInsets.only(top: 16.0, left: 8.0, right: 8.0, bottom: 8.0),
+            new EdgeInsets.only(top: 16.0, left: 8.0, right: 8.0, bottom: 8.0),
         child: new Column(
           children: <Widget>[
             new Expanded(
-                child: ListView.builder(
-                  padding: new EdgeInsets.all(8.0),
-                  shrinkWrap: true,
-                  itemCount: _items.groups.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    EventListItemModel eventListModel = _items.groups[index];
-                    return _createEventsParentItem(context, eventListModel);
-                  },
-                ),
-            )
+                child: Card(
+              child: _isLoading
+                  ? Container(
+                      child: Center(child: CircularProgressIndicator()),
+                      padding: EdgeInsets.all(16.0),
+                    )
+                  : ListView.builder(
+                      padding: new EdgeInsets.all(8.0),
+                      shrinkWrap: true,
+                      itemCount: _items.groups.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        EventListItemModel eventListModel =
+                            _items.groups[index];
+                        return _createEventsParentItem(context, eventListModel);
+                      },
+                    ),
+            ))
           ],
         ),
       ),
     );
   }
 }
-
