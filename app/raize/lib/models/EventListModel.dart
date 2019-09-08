@@ -1,4 +1,4 @@
-import 'EventModel.dart';
+import 'event_model.dart';
 import 'Location.dart';
 
 class EventListDummyModel {

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:raize/DetailWidget.dart';
+import 'package:raize/detail_widget.dart';
 
 class ParticipantDetailWidget extends StatefulWidget
 {

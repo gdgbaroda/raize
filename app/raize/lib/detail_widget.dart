@@ -1,16 +1,25 @@
 import 'package:flutter/material.dart';
-import 'dart:async';
 import 'package:flutter/services.dart';
-import 'package:raize/QRScanAPI.dart';
+import 'package:raize/qr_scan_api.dart';
 import 'package:simple_permissions/simple_permissions.dart';
 import 'package:barcode_scan/barcode_scan.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'models/event_model.dart';
 
 class DetailWidget extends StatefulWidget {
+  final EventModel eventModel;
+
+  DetailWidget({@required this.eventModel});
   @override
-  _MyAppState createState() => new _MyAppState();
+  _MyAppState createState() => new _MyAppState(eventModel);
 }
 
 class _MyAppState extends State<DetailWidget> {
+  EventModel eventModel;
+  _MyAppState(EventModel eventModel) {
+    this.eventModel = eventModel;
+  }
+
   String _reader = '';
   Color _resultColor;
   Permission permission = Permission.Camera;
@@ -22,40 +31,53 @@ class _MyAppState extends State<DetailWidget> {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        new Image(
-          image: new AssetImage('assets/person.jpeg'),
+        new Image.network(
+          eventModel.banner,
           height: 150,
-          width: 150,
-          fit: BoxFit.fill,
+          width: double.infinity,
+          fit: BoxFit.fitWidth,
         ),
         Padding(
-          padding: const EdgeInsets.all(8.0),
+          padding: const EdgeInsets.all(20.0),
           child: new Text(
-            " GDG Baroda Co- routine",
+            eventModel.description,
             style: TextStyle(fontSize: 20),
           ),
         ),
         Padding(
-          padding: const EdgeInsets.all(8.0),
+          padding: const EdgeInsets.all(20.0),
           child: new Text(
-            "23rd july ",
+            eventModel.duration.start.date,
             style: TextStyle(fontSize: 20),
           ),
         ),
-        RaisedButton(
-          textColor: Colors.blue,
-          child: new Text(
-            "Navigation",
-            textAlign: TextAlign.center,
+        const SizedBox(height: 90.0),
+        new Container(
+          alignment: Alignment.bottomCenter,
+          child: new SizedBox(
+            width: 350.0,
+            height: 50.0,
+            child: new RaisedButton(
+              child: new Text('Navigation'),
+              onPressed: _launchMapsUrl,
+            ),
           ),
-          onPressed: () {},
         ),
-        RaisedButton(
-            textColor: Colors.blue,
-            child: new Text("Check In"),
-            onPressed: scan //scanOrDisable(true),
+        const SizedBox(height: 10.0),
+        new Container(
+          alignment: Alignment.bottomCenter,
+          child: new SizedBox(
+            width: 350.0,
+            height: 50.0,
+            child: new RaisedButton(
+              child: new Text('Check In'),
+              onPressed: scan,
+            ),
+          ),
         ),
-        new Row(
+        const SizedBox(height: 30.0),
+        new Container(
+        child : new Row(
           children: <Widget>[
             new Text(
               '$_reader',
@@ -70,15 +92,16 @@ class _MyAppState extends State<DetailWidget> {
             ),
           ],
         ),
+        )
       ],
     );
   }
 
   requestPermission() async {
     PermissionStatus result =
-    await SimplePermissions.requestPermission(permission);
+        await SimplePermissions.requestPermission(permission);
     setState(
-          () => new SnackBar(
+      () => new SnackBar(
         backgroundColor: Colors.red,
         content: new Text(" $result"),
       ),
@@ -102,9 +125,9 @@ class _MyAppState extends State<DetailWidget> {
       }
     } on FormatException {
       setState(() => () => new SnackBar(
-        backgroundColor: Colors.red,
-        content: new Text("Scan Cancelled!"),
-      ));
+            backgroundColor: Colors.red,
+            content: new Text("Scan Cancelled!"),
+          ));
     } catch (e) {
       setState(() => _reader = 'Unknown error: $e');
     }
@@ -119,6 +142,15 @@ class _MyAppState extends State<DetailWidget> {
       this._reader = "Please contact Orgnaizer!";
       this._resultColor = Colors.red;
       _statusImg = new AssetImage('assets/img_rejected_candidate.jpeg');
+    }
+  }
+
+  _launchMapsUrl() async {
+    final url = 'https://goo.gl/maps/3D42ABqcuTG6t9kLA';
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
     }
   }
 }

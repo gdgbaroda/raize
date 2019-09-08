@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:raize/EventListWidget.dart';
-import 'package:raize/SignInWidget.dart';
-import 'package:raize/SplashWidget.dart';
-
+import 'package:raize/sign_in.dart';
+import 'package:raize/event_list_screen.dart';
+import 'package:raize/splash_screen.dart';
 
 void main() => runApp(MyApp());
 
@@ -12,12 +11,12 @@ class MyApp extends StatelessWidget {
     SplashWidget.tag: (context) => SplashWidget(),
     SignInWidget.tag: (context) => SignInWidget(),
     EventListWidget.tag: (context) => EventListWidget()
-   // EventDetailWidget.tag: (context) => EventDetailWidget(),
+   // EventListWidgetntDetailWidget.tag: (context) => EventDetailWidget(),
   };
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Raize',
       theme: ThemeData(
         // This is the theme of your application.
         //
