@@ -9,14 +9,10 @@ class EventModel {
   String description;
   bool host;
   EventVenueModel venue;
+
 //  EventDurationModel EventDurationModelduration;
 
-  EventModel(
-      {this.id,
-        this.title,
-        this.description,
-        this.host,
-        this.venue
+  EventModel({this.id, this.title, this.description, this.host, this.venue
 //        this.duration
       });
 
@@ -25,9 +21,11 @@ class EventModel {
     title = json['title'];
     description = json['description'];
 
-      host = json['hosts'];
+    host = json['host'];
 
-    venue = json['venue'] != null ? new EventVenueModel.fromJson(json['venue']) : null;
+    venue = json['venue'] != null
+        ? new EventVenueModel.fromJson(json['venue'])
+        : null;
 //    duration = json['duration'] != null
 //        ? new EventDurationModel.fromJson(json['duration'])
 //        : null;
@@ -38,7 +36,7 @@ class EventModel {
     data['id'] = this.id;
     data['title'] = this.title;
     data['description'] = this.description;
-      data['hosts'] = this.host;
+    data['host'] = this.host;
 
     if (this.venue != null) {
       data['venue'] = this.venue.toJson();
