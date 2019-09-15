@@ -1,5 +1,9 @@
 FROM node:10-alpine
 
+# Explicitly set the timezone to IST
+RUN apk add --no-cache tzdata
+ENV TZ=Asia/Kolkata
+
 # Create app directory
 WORKDIR /usr/src/app
 
