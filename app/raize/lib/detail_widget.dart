@@ -151,3 +151,4 @@ class _MyAppState extends State<DetailWidget> {
     }
   }
 }
+
