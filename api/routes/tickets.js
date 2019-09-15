@@ -132,6 +132,9 @@ router.get('/t/status/:paymentid/', async function (req, res) {
             console.log(JSON.stringify(data.data));
             let today = new Date();
             let date = today.getDate() + '-' + (today.getMonth() + 1) + '-' + today.getFullYear();
+
+            console.log(`Current hour: ${today.getHours()}`);
+
             if (today.getHours() >= 16) {
                 if (data.data['payment'] != null) {
                     if (data.data['payment']['status'] === 'Credit')
