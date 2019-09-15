@@ -23,7 +23,7 @@ router.get('/qrcode/email', async function (req, res) {
                 email: row['Buyer Email Address'],
                 category: row['Link/Purpose']
             });
-    })
+        })
         .on('end', () => {
             ticketsFromCsv.forEach(ticket => {
                 let id = ticket['paymentId'];
@@ -69,6 +69,8 @@ router.get('/qrcode/email', async function (req, res) {
 
             console.log('CSV file successfully processed');
         });
+
+    return res.json({ status: true, message: "QR Code sent successfully"});
 });
 
 router.get('/status/:paymentid/', async function (req, res) {
