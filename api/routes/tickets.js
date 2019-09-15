@@ -138,7 +138,14 @@ router.get('/t/status/:paymentid/', async function (req, res) {
 // example: for date such as 08-09-2019, the actual file name is 8-9-2019
 router.get('/checkins/:date/', async function (req, res) {
 
-    const file = `./data/${req.params.date}.csv`;
+    const file = `./data/${req.params.date}_CheckIns.csv`;
+
+    res.download(file);
+
+});
+router.get('/giveaways/:date/', async function (req, res) {
+
+    const file = `./data/${req.params.date}_GiveAways.csv`;
 
     res.download(file);
 
