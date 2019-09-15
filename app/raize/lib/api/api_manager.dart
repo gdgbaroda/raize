@@ -61,9 +61,9 @@ class APIManager {
 
   }
 
-  static Future<bool> validateUser(String code) async {
+  static Future<bool> validateUser(String code,bool isRegistration) async {
     return await http
-        .get(URLs.URL_VERIFY_QR_CODE + code)
+        .get(isRegistration?URLs.URL_VERIFY_QR_CODE + code:URLs.URL_VERIFY_QR_CODE_FOR_SWAGS + code)
         .then((response) {
       if (response != null) {
         var convertedData = jsonDecode(response.body);

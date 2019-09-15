@@ -6,26 +6,28 @@ enum VerificationState { VERIFYING, VERIFIED, INVALID }
 
 class QRScanState extends StatefulWidget {
   static String tag = 'qr-scan-state-screen';
-  String qrData;
+  final String qrData;
+  final bool isRegistration;
 
-  QRScanState({@required this.qrData});
+  QRScanState({@required this.qrData, this.isRegistration});
 
   @override
-  _QRScanState createState() => _QRScanState(qrData: qrData);
+  _QRScanState createState() => _QRScanState(qrData: qrData,isRegistration: isRegistration);
 }
 
 class _QRScanState extends State<QRScanState> {
   VerificationState state = VerificationState.VERIFYING;
   String qrData;
+  bool isRegistration;
 
-  _QRScanState({@required this.qrData});
+  _QRScanState({@required this.qrData,  this.isRegistration});
 
   @override
   Future initState() {
     super.initState();
     _setState(VerificationState.VERIFYING);
 
-    APIManager.validateUser(qrData).then((userAuthenticated) {
+    APIManager.validateUser(qrData,isRegistration).then((userAuthenticated) {
       print("$qrData and $userAuthenticated");
       if (userAuthenticated) {
         _setState(VerificationState.VERIFIED);

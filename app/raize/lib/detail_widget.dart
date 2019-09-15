@@ -65,7 +65,7 @@ class _MyAppState extends State<DetailWidget> {
                  ),
                ) ,
               color: Colors.blue,
-              onPressed: scan,
+              onPressed: scan(true),
             ),
           ):SizedBox(height: 0.0),
         ),
@@ -82,7 +82,7 @@ class _MyAppState extends State<DetailWidget> {
                 color: Colors.white
               ),
               ),
-              onPressed: scan,
+              onPressed: scan(false),
             ),
           ):SizedBox(height:0.0),
         ),
@@ -131,7 +131,7 @@ class _MyAppState extends State<DetailWidget> {
     );
   }
 
-  scan() async {
+  scan(bool) async {
     try {
       String qrData = await BarcodeScanner.scan();
 
@@ -142,7 +142,7 @@ class _MyAppState extends State<DetailWidget> {
       Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => QRScanState(qrData: qrData),
+          builder: (context) => QRScanState(qrData: qrData,isRegistration: bool),
         ),
       );
     } on PlatformException catch (e) {
