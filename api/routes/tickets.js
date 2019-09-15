@@ -116,17 +116,20 @@ router.get('/t/status/:paymentid/', async function (req, res) {
                 }
 
         }).then(async (data) => {
-        console.log(JSON.stringify(data.data));
+            console.log(JSON.stringify(data.data));
+            let today = new Date();
+            if (today.getHours() >= 16) {
+                if (data.data['payment'] != null) {
+                    if (data.data['payment']['status'] === 'Credit')
+                        createCSV.data.CreateCSV(data.data, 'GiveAways');
+                    return res.json({status: true});
+                }
+            }
 
-        if (data.data['payment'] != null) {
-            if (data.data['payment']['status'] === 'Credit')
-                createCSV.data.CreateCSV(data.data, 'GiveAways');
-            return res.json({status: true});
+            return res.json({status: false});
+
         }
-
-        return res.json({status: false});
-
-    }).catch((error) => {
+    ).catch((error) => {
         console.log(JSON.stringify(error['message']))
 
         return res.json({status: false, reason: JSON.stringify(error['message'])});
