@@ -10,6 +10,8 @@ const createCSV = require('../helpers/csv-writer');
 const readCSV = require('../helpers/csv-reader');
 sgMail.setApiKey(config.SENDGRID_API_KEY);
 const ticketsFromCsv = [];
+const path = require('path');
+const directory = './data';
 
 router.get('/qrcode/email', async function (req, res) {
 
@@ -93,17 +95,17 @@ router.get('/status/:paymentid/', async function (req, res) {
                         await fs.createReadStream(`./data/${date}_CheckIns.csv`).pipe(csv()).on('data', async (row) => {
                             if (row['PAYMENT ID'] !== data.data['payment']['payment_id']) {
                                 await createCSV.data.CreateCSV(data.data, 'CheckIns');
-                                return res.json({status: true, message: `${data.data['payment']['buyer_name']}`});
+                                return res.json({status: true, message: `${data.data['payment']['buyer_name']} checked in.`});
                             } else {
-                                return res.json({status: false, message: 'Already Exists!'});
+                                return res.json({status: false, message: `${data.data['payment']['buyer_name']} is already checked in.`});
                             }
                         })
                     } else {
                         createCSV.data.CreateCSV(data.data, 'CheckIns');
-                        return res.json({status: true, message: `${data.data['payment']['buyer_name']}`});
+                        return res.json({status: true, message: `${data.data['payment']['buyer_name']} checked in.`});
                     }
             } else {
-                return res.json({status: false});
+                return res.json({status: false, message: `${data.data['payment']['buyer_name']} is already checked in.`});
             }
         }
     ).catch((error) => {
@@ -115,9 +117,6 @@ router.get('/status/:paymentid/', async function (req, res) {
 });
 
 router.get('/t/status/:paymentid/', async function (req, res) {
-
-    let ApiKey = "6542868eb3df23a8b6724fd73489a029";
-    let AuthToken = "432fddd99b8580a98398b2e0cc29f46f";
 
     await axios.get(`https://www.instamojo.com/api/1.1/payments/${req.params.paymentid}/`,
         {
@@ -141,17 +140,17 @@ router.get('/t/status/:paymentid/', async function (req, res) {
                             await fs.createReadStream(`./data/${date}_GiveAways.csv`).pipe(csv()).on('data', async (row) => {
                                 if (row['PAYMENT ID'] !== data.data['payment']['payment_id']) {
                                     await createCSV.data.CreateCSV(data.data, 'GiveAways');
-                                    return res.json({status: true, message: `${data.data['payment']['buyer_name']}`});
+                                    return res.json({status: true, message: `${data.data['payment']['buyer_name']} is schwagged up!`});
                                 } else {
-                                    return res.json({status: false, message: 'Already Exists!'});
+                                    return res.json({status: false, message: `${data.data['payment']['buyer_name']} is already schwagged up.`});
                                 }
                             })
                         } else {
                             createCSV.data.CreateCSV(data.data, 'GiveAways');
-                            return res.json({status: true, message: `${data.data['payment']['buyer_name']}`});
+                            return res.json({status: true, message: `${data.data['payment']['buyer_name']} is schwagged up!`});
                         }
                 } else {
-                    return res.json({status: false});
+                    return res.json({status: false, message: `${data.data['payment']['buyer_name']} is already schwagged up.`});
                 }
             } else {
                 return res.json({status: false, reason: 'Giveaway not started yet.'});
@@ -174,12 +173,31 @@ router.get('/checkins/:date/', async function (req, res) {
     res.download(file);
 
 });
+
+// date is of format DD-MM-YYYY without prefix 0
+// example: for date such as 08-09-2019, the actual file name is 8-9-2019
 router.get('/giveaways/:date/', async function (req, res) {
 
     const file = `./data/${req.params.date}_GiveAways.csv`;
 
     res.download(file);
 
+});
+
+// a helper route to help your delete files from the /data directory cause this run within docker container
+router.get('/data/clear', async function (req, res) {
+
+    fs.readdir(directory, (err, files) => {
+        if (err) throw err;
+      
+        for (const file of files) {
+          fs.unlink(path.join(directory, file), err => {
+            if (err) throw err;
+          });
+        }
+      });
+
+      return res.json(`${directory} contents cleared`);
 });
 
 module.exports = router;
