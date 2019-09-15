@@ -20,7 +20,7 @@ class _QRScanState extends State<QRScanState> {
   VerificationState state = VerificationState.VERIFYING;
   String qrData;
   bool isRegistration;
-  String qrScanFailedReason = "";
+  String qrMessage = "";
 
   _QRScanState({@required this.qrData,  this.isRegistration});
 
@@ -31,10 +31,10 @@ class _QRScanState extends State<QRScanState> {
 
     APIManager.validateUser(qrData,isRegistration).then((userAuthenticated) {
       print("$qrData and $userAuthenticated");
+      qrMessage = userAuthenticated.message;
       if (userAuthenticated.status) {
         _setState(VerificationState.VERIFIED);
       } else {
-        qrScanFailedReason = userAuthenticated.reason;
         _setState(VerificationState.INVALID);
       }
     });
@@ -84,7 +84,7 @@ class _QRScanState extends State<QRScanState> {
           ),
           Container(
             margin: const EdgeInsets.only(top: 10.0),
-            child: Text("Verified!",
+            child: Text(qrMessage,
                 style: TextStyle(
                     fontSize: 18.0,
                     color: Colors.green,
@@ -105,7 +105,7 @@ class _QRScanState extends State<QRScanState> {
           ),
           Container(
             margin: const EdgeInsets.only(top: 10.0),
-            child: Text(qrScanFailedReason,
+            child: Text(qrMessage,
                 style: TextStyle(
                     fontSize: 18.0,
                     color: Colors.red,

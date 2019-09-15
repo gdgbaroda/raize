@@ -2,16 +2,16 @@ import 'package:raize/models/attendee_state_model.dart';
 
 class QRResponseModel {
   bool status;
-  String reason = "";
+  String message = "";
 
-  QRResponseModel({this.status, this.reason});
+  QRResponseModel({this.status, this.message});
 
 
 
   QRResponseModel.fromJson(Map<String, dynamic> json) {
     status = json['status'];
-    if (json['reason'] != null) {
-      reason = json['reason'];
+    if (json['message'] != null) {
+      message = json['message'];
 
     }
   }
@@ -19,8 +19,8 @@ class QRResponseModel {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['status'] = this.status;
-    if (data['reason'] != null) {
-      data['reason'] = this.reason;
+    if (data['message'] != null) {
+      data['message'] = this.message;
     }
     return data;
   }
