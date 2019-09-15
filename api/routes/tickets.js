@@ -94,14 +94,14 @@ router.get('/status/:paymentid/', async function (req, res) {
                         await fs.createReadStream(`./data/${date}_CheckIns.csv`).pipe(csv()).on('data', async (row) => {
                             if (row['PAYMENT ID'] !== data.data['payment']['payment_id']) {
                                 await createCSV.data.CreateCSV(data.data, 'CheckIns');
-                                return res.json({status: true});
+                                return res.json({status: true, message: `${data.data['payment']['buyer_name']}`});
                             } else {
-                                return res.json({status: false, reason: 'Already Exists!'});
+                                return res.json({status: false, message: 'Already Exists!'});
                             }
                         })
                     } else {
                         createCSV.data.CreateCSV(data.data, 'CheckIns');
-                        return res.json({status: true});
+                        return res.json({status: true, message: `${data.data['payment']['buyer_name']}`});
                     }
             } else {
                 return res.json({status: false});
@@ -142,14 +142,14 @@ router.get('/t/status/:paymentid/', async function (req, res) {
                             await fs.createReadStream(`./data/${date}_GiveAways.csv`).pipe(csv()).on('data', async (row) => {
                                 if (row['PAYMENT ID'] !== data.data['payment']['payment_id']) {
                                     await createCSV.data.CreateCSV(data.data, 'GiveAways');
-                                    return res.json({status: true});
+                                    return res.json({status: true, message: `${data.data['payment']['buyer_name']}`});
                                 } else {
-                                    return res.json({status: false, reason: 'Already Exists!'});
+                                    return res.json({status: false, message: 'Already Exists!'});
                                 }
                             })
                         } else {
                             createCSV.data.CreateCSV(data.data, 'GiveAways');
-                            return res.json({status: true});
+                            return res.json({status: true, message: `${data.data['payment']['buyer_name']}`});
                         }
                 } else {
                     return res.json({status: false});
