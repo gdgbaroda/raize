@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 import 'package:raize/models/event_list_model.dart';
+import 'package:raize/models/qr_response_model.dart';
 import 'package:raize/shared_pref.dart';
 import 'package:raize/utility/urls.dart';
 import 'dart:io';
@@ -61,7 +62,7 @@ class APIManager {
 
   }
 
-  static Future<bool> validateUser(String code,bool isRegistration) async {
+  static Future<QRResponseModel> validateUser(String code,bool isRegistration) async {
     return await http
         .get(isRegistration?URLs.URL_VERIFY_QR_CODE + code:URLs.URL_VERIFY_QR_CODE_FOR_SWAGS + code)
         .then((response) {
@@ -69,12 +70,12 @@ class APIManager {
         var convertedData = jsonDecode(response.body);
         if (convertedData != null) {
           print("response $convertedData");
-          return convertedData["status"];
+          return QRResponseModel.fromJson(convertedData);
         } else {
-          return false;
+          return null;
         }
       } else {
-        return false;
+        return null;
       }
     });
   }

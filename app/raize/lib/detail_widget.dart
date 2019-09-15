@@ -65,7 +65,7 @@ class _MyAppState extends State<DetailWidget> {
                  ),
                ) ,
               color: Colors.blue,
-              onPressed: scan(true),
+              onPressed:  () => _scanQr(true),
             ),
           ):SizedBox(height: 0.0),
         ),
@@ -82,7 +82,7 @@ class _MyAppState extends State<DetailWidget> {
                 color: Colors.white
               ),
               ),
-              onPressed: scan(false),
+              onPressed: () => _scanQr(false),
             ),
           ):SizedBox(height:0.0),
         ),
@@ -131,7 +131,7 @@ class _MyAppState extends State<DetailWidget> {
     );
   }
 
-  scan(bool) async {
+  _scanQr(bool) async {
     try {
       String qrData = await BarcodeScanner.scan();
 
