@@ -6,6 +6,7 @@ const router = express.Router();
 let axios = require('axios');
 const sgMail = require('@sendgrid/mail');
 const createCSV = require('../helpers/csv-writer');
+const readCSV = require('../helpers/csv-reader');
 sgMail.setApiKey('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');
 const ticketsFromCsv = [];
 
@@ -84,17 +85,29 @@ router.get('/status/:paymentid/', async function (req, res) {
                 }
 
         }).then(async (data) => {
-        console.log(JSON.stringify(data.data));
-
-        if (data.data['payment'] != null) {
-            if (data.data['payment']['status'] === 'Credit')
-                createCSV.data.CreateCSV(data.data, 'CheckIns');
-            return res.json({status: true});
+            console.log(JSON.stringify(data.data));
+            let today = new Date();
+            let date = today.getDate() + '-' + (today.getMonth() + 1) + '-' + today.getFullYear();
+            if (data.data['payment'] != null) {
+                if (data.data['payment']['status'] === 'Credit')
+                    if (fs.existsSync(`./data/${date}_CheckIns.csv`)) {
+                        await fs.createReadStream(`./data/${date}_CheckIns.csv`).pipe(csv()).on('data', async (row) => {
+                            if (row['PAYMENT ID'] !== data.data['payment']['payment_id']) {
+                                await createCSV.data.CreateCSV(data.data, 'CheckIns');
+                                return res.json({status: true});
+                            } else {
+                                return res.json({status: false, reason: 'Already Exists!'});
+                            }
+                        })
+                    } else {
+                        createCSV.data.CreateCSV(data.data, 'CheckIns');
+                        return res.json({status: true});
+                    }
+            } else {
+                return res.json({status: false});
+            }
         }
-
-        return res.json({status: false});
-
-    }).catch((error) => {
+    ).catch((error) => {
         console.log(JSON.stringify(error['message']))
 
         return res.json({status: false, reason: JSON.stringify(error['message'])});
@@ -118,18 +131,29 @@ router.get('/t/status/:paymentid/', async function (req, res) {
         }).then(async (data) => {
             console.log(JSON.stringify(data.data));
             let today = new Date();
+            let date = today.getDate() + '-' + (today.getMonth() + 1) + '-' + today.getFullYear();
             if (today.getHours() >= 16) {
                 if (data.data['payment'] != null) {
                     if (data.data['payment']['status'] === 'Credit')
-                        createCSV.data.CreateCSV(data.data, 'GiveAways');
-                    return res.json({status: true});
+                        if (fs.existsSync(`./data/${date}_GiveAways.csv`)) {
+                            await fs.createReadStream(`./data/${date}_GiveAways.csv`).pipe(csv()).on('data', async (row) => {
+                                if (row['PAYMENT ID'] !== data.data['payment']['payment_id']) {
+                                    await createCSV.data.CreateCSV(data.data, 'GiveAways');
+                                    return res.json({status: true});
+                                } else {
+                                    return res.json({status: false, reason: 'Already Exists!'});
+                                }
+                            })
+                        } else {
+                            createCSV.data.CreateCSV(data.data, 'GiveAways');
+                            return res.json({status: true});
+                        }
+                } else {
+                    return res.json({status: false});
                 }
-            }else {
-                return res.json({status: false, message: 'Giveaway not started yet.'});
+            } else {
+                return res.json({status: false, reason: 'Giveaway not started yet.'});
             }
-
-            return res.json({status: false});
-
         }
     ).catch((error) => {
         console.log(JSON.stringify(error['message']))
