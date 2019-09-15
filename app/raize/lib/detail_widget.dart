@@ -10,7 +10,6 @@ import 'models/event_model.dart';
 class DetailWidget extends StatefulWidget {
   final EventModel eventModel;
 
-
   DetailWidget({@required this.eventModel});
   @override
   _MyAppState createState() => new _MyAppState(eventModel);
@@ -65,30 +64,37 @@ class _MyAppState extends State<DetailWidget> {
           ),
         ),
         const SizedBox(height: 10.0),
+        Visibility(
+            visible: eventModel.host,
+            child: Column(children: [
+              new SizedBox(
+                width: 350.0,
+                height: 50.0,
+                child: new RaisedButton(
+                  child: Text('Scan'),
+                  onPressed: scan,
+                ),
+              ),
+              const SizedBox(height: 30.0),
+              new SizedBox(
+                width: 350.0,
+                height: 50.0,
+                child: new RaisedButton(
+                  child: Text('swag'),
+                  onPressed: scan,
+                ),
+              )
+            ])),
         new Container(
-          alignment: Alignment.bottomCenter,
-          child: new SizedBox(
-            width: 350.0,
-            height: 50.0,
-            child: new RaisedButton(
-              child:
-              (eventModel.host)?new Text('Scan') :SizedBox(),
-              onPressed: scan,
-            ),
+          child: new Row(
+            children: <Widget>[
+              new Text(
+                '$_reader',
+                softWrap: true,
+                style: new TextStyle(fontSize: 20.0, color: _resultColor),
+              ),
+            ],
           ),
-        ),
-        const SizedBox(height: 30.0),
-        new Container(
-        child : new Row(
-          children: <Widget>[
-            new Text(
-              '$_reader',
-              softWrap: true,
-              style: new TextStyle(fontSize: 20.0, color: _resultColor),
-            ),
-
-          ],
-        ),
         )
       ],
     );
@@ -135,9 +141,9 @@ class _MyAppState extends State<DetailWidget> {
     }
   }
 
-
   _launchMapsUrl() async {
-    final url = 'https://www.google.com/maps/dir//Hotel+Sayaji,+Parshuram+Nagar,+Sayajiganj,+Vadodara,+Gujarat+390001/@22.305542,73.185483,20z/data=!4m8!4m7!1m0!1m5!1m1!1s0x395fcfb37f43d7b9:0xa4c63926d4354df0!2m2!1d73.1856699!2d22.3054179?hl=en';
+    final url =
+        'https://www.google.com/maps/dir//Hotel+Sayaji,+Parshuram+Nagar,+Sayajiganj,+Vadodara,+Gujarat+390001/@22.305542,73.185483,20z/data=!4m8!4m7!1m0!1m5!1m1!1s0x395fcfb37f43d7b9:0xa4c63926d4354df0!2m2!1d73.1856699!2d22.3054179?hl=en';
     if (await canLaunch(url)) {
       await launch(url);
     } else {
