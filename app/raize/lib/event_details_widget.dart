@@ -7,25 +7,28 @@ class EventDetailsWidget extends StatefulWidget {
 
   // Declare a field that holds the Todo.
   final EventModel eventModel;
+  final String groupName;
 
   // In the constructor, require a Todo.
-  EventDetailsWidget({@required  this.eventModel}) ;
+  EventDetailsWidget({@required  this.eventModel, this.groupName}) ;
 
   @override
-  _EventState createState() => _EventState(eventModel);
+  _EventState createState() => _EventState(eventModel,groupName);
 }
 
 class _EventState extends State<EventDetailsWidget> {
   EventModel eventModel;
-  _EventState(EventModel eventModel){
+  String groupName;
+  _EventState(EventModel eventModel,String groupName){
     this.eventModel = eventModel;
+    this.groupName = groupName;
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text(eventModel.title),
+          title: Text(groupName),
         ),
         body: SingleChildScrollView(
           child: Column(

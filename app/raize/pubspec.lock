@@ -48,13 +48,6 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
-  flutter_html:
-    dependency: "direct main"
-    description:
-      name: flutter_html
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.10.4"
   flutter_webview_plugin:
     dependency: "direct main"
     description:
@@ -63,7 +56,7 @@ packages:
     source: hosted
     version: "0.3.2"
   html:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: html
       url: "https://pub.dartlang.org"

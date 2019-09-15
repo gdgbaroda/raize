@@ -1,11 +1,9 @@
-import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:raize/api/api_manager.dart';
 import 'package:raize/models/event_model.dart';
 import 'package:raize/event_details_widget.dart';
-import 'package:raize/shared_pref.dart';
 
 import 'models/event_list_item_model.dart';
 import 'models/event_list_model.dart';
@@ -70,7 +68,7 @@ class _EventListWidget extends State<EventListWidget> {
           itemCount: eventList.events.length,
           itemBuilder: (BuildContext context, int index) {
             return _createEventItem(
-                context, eventList.events[index], eventList.thumbnail);
+                context, eventList.events[index], eventList.thumbnail,eventList.title);
           },
         ),
 
@@ -81,14 +79,14 @@ class _EventListWidget extends State<EventListWidget> {
 
   //creates view for each item in listview
   Widget _createEventItem(
-      BuildContext context, EventModel eventModel, String thumbnail) {
+      BuildContext context, EventModel eventModel, String thumbnail,String groupName) {
     return new GestureDetector(
       //listens for on tap
       onTap: () {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => EventDetailsWidget(eventModel: eventModel),
+            builder: (context) => EventDetailsWidget(eventModel: eventModel,groupName:groupName),
             //builder: (context) => new EventDetailsWidget()
           ),
         );

@@ -13,7 +13,7 @@ class DetailWidget extends StatefulWidget {
 
   DetailWidget({@required this.eventModel});
   @override
-  _MyAppState createState() => new _MyAppState(eventModel);
+  _MyAppState createState() => _MyAppState(eventModel);
 }
 
 class _MyAppState extends State<DetailWidget> {
@@ -28,63 +28,89 @@ class _MyAppState extends State<DetailWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return new Column(
+    return Column(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-//        new Image.network(
-//          eventModel.banner,//todo change it from new data model
-//          height: 150,
-//          width: double.infinity,
-//          fit: BoxFit.fitWidth,
-//        ),
         Padding(
-          padding: const EdgeInsets.all(20.0),
-          child: new Text(
-            eventModel.description,
-            style: TextStyle(fontSize: 20),
+          padding: EdgeInsets.all(20.0),
+          child: Text(
+            eventModel.title,
+            style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 25
+            ),
           ),
         ),
-//        Padding(
-//          padding: const EdgeInsets.all(20.0),
-//          child: new Text(
-//            eventModel.duration.start.date,
-//            style: TextStyle(fontSize: 20),
-//          ),
-//        ),
-        const SizedBox(height: 90.0),
-        new Container(
+        Padding(
+          padding: EdgeInsets.all(20.0),
+          child: Text(
+            eventModel.description,
+            style: TextStyle(
+                fontSize: 20
+            ),
+          ),
+        ),
+        SizedBox(height: 90.0),
+        Container(
           alignment: Alignment.bottomCenter,
-          child: new SizedBox(
+          child: (eventModel.host)? SizedBox(
             width: 350.0,
             height: 50.0,
-            child: new RaisedButton(
-              child: new Text('Navigation'),
+            child: RaisedButton(
+              child:
+               Text('Scan',
+                 style: TextStyle(
+                     color: Colors.white
+                 ),
+               ) ,
+              color: Colors.blue,
+              onPressed: scan,
+            ),
+          ):SizedBox(height: 0.0),
+        ),
+        SizedBox(height: 10.0),
+        Container(
+          alignment: Alignment.bottomCenter,
+          child: (eventModel.host)? SizedBox(
+            width: 350.0,
+            height: 50.0,
+            child: RaisedButton(
+              color: Colors.blue,
+              child: Text('Swag',
+              style: TextStyle(
+                color: Colors.white
+              ),
+              ),
+              onPressed: scan,
+            ),
+          ):SizedBox(height:0.0),
+        ),
+        SizedBox(height: 10.0),
+        Container(
+          alignment: Alignment.bottomCenter,
+          child: SizedBox(
+            width: 350.0,
+            height: 50.0,
+            child: OutlineButton(
+              color: Colors.white,
+              borderSide: BorderSide(color: Colors.blue),
+              child: Text('Navigation',
+                style: TextStyle(
+                    color: Colors.blue
+                ),),
               onPressed: _launchMapsUrl,
             ),
           ),
         ),
-        const SizedBox(height: 10.0),
-        new Container(
-          alignment: Alignment.bottomCenter,
-          child: new SizedBox(
-            width: 350.0,
-            height: 50.0,
-            child: new RaisedButton(
-              child:
-              (eventModel.host)?new Text('Scan') :SizedBox(),
-              onPressed: scan,
-            ),
-          ),
-        ),
-        const SizedBox(height: 30.0),
-        new Container(
-        child : new Row(
+        SizedBox(height: 30.0),
+        Container(
+        child : Row(
           children: <Widget>[
-            new Text(
+            Text(
               '$_reader',
               softWrap: true,
-              style: new TextStyle(fontSize: 20.0, color: _resultColor),
+              style: TextStyle(fontSize: 20.0, color: _resultColor),
             ),
 
           ],
@@ -98,9 +124,9 @@ class _MyAppState extends State<DetailWidget> {
     PermissionStatus result =
         await SimplePermissions.requestPermission(permission);
     setState(
-      () => new SnackBar(
+      () => SnackBar(
         backgroundColor: Colors.red,
-        content: new Text(" $result"),
+        content: Text(" $result"),
       ),
     );
   }
@@ -126,9 +152,9 @@ class _MyAppState extends State<DetailWidget> {
         setState(() => _reader = "unknown exception $e");
       }
     } on FormatException {
-      setState(() => () => new SnackBar(
+      setState(() => () => SnackBar(
             backgroundColor: Colors.red,
-            content: new Text("Scan Cancelled!"),
+            content: Text("Scan Cancelled!"),
           ));
     } catch (e) {
       setState(() => _reader = 'Unknown error: $e');
