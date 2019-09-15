@@ -6,30 +6,35 @@ enum VerificationState { VERIFYING, VERIFIED, INVALID }
 
 class QRScanState extends StatefulWidget {
   static String tag = 'qr-scan-state-screen';
-  String qrData;
+  final String qrData;
 
-  QRScanState({@required this.qrData});
+  final bool isRegistration;
+
+  QRScanState({@required this.qrData, this.isRegistration});
 
   @override
-  _QRScanState createState() => _QRScanState(qrData: qrData);
+  _QRScanState createState() => _QRScanState(qrData: qrData,isRegistration: isRegistration);
 }
 
 class _QRScanState extends State<QRScanState> {
   VerificationState state = VerificationState.VERIFYING;
   String qrData;
+  bool isRegistration;
+  String qrScanFailedReason = "";
 
-  _QRScanState({@required this.qrData});
+  _QRScanState({@required this.qrData,  this.isRegistration});
 
   @override
   Future initState() {
     super.initState();
     _setState(VerificationState.VERIFYING);
 
-    APIManager.validateUser(qrData).then((userAuthenticated) {
+    APIManager.validateUser(qrData,isRegistration).then((userAuthenticated) {
       print("$qrData and $userAuthenticated");
-      if (userAuthenticated) {
+      if (userAuthenticated.status) {
         _setState(VerificationState.VERIFIED);
       } else {
+        qrScanFailedReason = userAuthenticated.reason;
         _setState(VerificationState.INVALID);
       }
     });
@@ -55,6 +60,7 @@ class _QRScanState extends State<QRScanState> {
         return _createVerifiedStateWidget();
 
       case VerificationState.INVALID:
+
         return _createInvalidStateWidget();
 
       default:
@@ -99,7 +105,7 @@ class _QRScanState extends State<QRScanState> {
           ),
           Container(
             margin: const EdgeInsets.only(top: 10.0),
-            child: Text("Invalid Coupon!",
+            child: Text(qrScanFailedReason,
                 style: TextStyle(
                     fontSize: 18.0,
                     color: Colors.red,
