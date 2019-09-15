@@ -124,6 +124,8 @@ router.get('/t/status/:paymentid/', async function (req, res) {
                         createCSV.data.CreateCSV(data.data, 'GiveAways');
                     return res.json({status: true});
                 }
+            }else {
+                return res.json({status: false, message: 'Giveaway not started yet.'});
             }
 
             return res.json({status: false});
