@@ -1,3 +1,4 @@
+let config = require('../config/config');
 const csv = require('csv-parser');
 const fs = require('fs');
 var QRCode = require('qrcode');
@@ -7,9 +8,8 @@ let axios = require('axios');
 const sgMail = require('@sendgrid/mail');
 const createCSV = require('../helpers/csv-writer');
 const readCSV = require('../helpers/csv-reader');
-sgMail.setApiKey('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');
+sgMail.setApiKey(config.SENDGRID_API_KEY);
 const ticketsFromCsv = [];
-
 
 router.get('/qrcode/email', async function (req, res) {
 
@@ -73,16 +73,13 @@ router.get('/qrcode/email', async function (req, res) {
 
 router.get('/status/:paymentid/', async function (req, res) {
 
-    let ApiKey = "6542868eb3df23a8b6724fd73489a029";
-    let AuthToken = "432fddd99b8580a98398b2e0cc29f46f";
-
     await axios.get(`https://www.instamojo.com/api/1.1/payments/${req.params.paymentid}/`,
         {
             headers:
-                {
-                    'X-Api-Key': ApiKey,
-                    'X-Auth-Token': AuthToken
-                }
+            {
+                'X-Api-Key': config.INSTAMOJO_API_KEY,
+                'X-Auth-Token': config.INSTAMOJO_AUTH_TOKEN
+            }
 
         }).then(async (data) => {
             console.log(JSON.stringify(data.data));
@@ -123,10 +120,10 @@ router.get('/t/status/:paymentid/', async function (req, res) {
     await axios.get(`https://www.instamojo.com/api/1.1/payments/${req.params.paymentid}/`,
         {
             headers:
-                {
-                    'X-Api-Key': ApiKey,
-                    'X-Auth-Token': AuthToken
-                }
+            {
+                'X-Api-Key': config.INSTAMOJO_API_KEY,
+                'X-Auth-Token': config.INSTAMOJO_AUTH_TOKEN
+            }
 
         }).then(async (data) => {
             console.log(JSON.stringify(data.data));
