@@ -4,12 +4,12 @@ const createCsvWriter = require('csv-writer').createObjectCsvWriter;
 var newLine = "\r\n";
 var methods = {};
 
-methods.CreateCSV = async function (data) {
+methods.CreateCSV = async function (data, filename) {
     let today = new Date();
     let date = today.getDate() + '-' + (today.getMonth() + 1) + '-' + today.getFullYear();
     var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
     var dateTime = date + ' ' + time;
-    let path = `./data/${date}.csv`;
+    let path = `./data/${date}_${filename}.csv`;
     const records = [
         {
             event: data['payment']['link_title'],
@@ -27,7 +27,7 @@ methods.CreateCSV = async function (data) {
                 {id: 'payment_id', title: 'PAYMENT ID'},
                 {id: 'name', title: 'NAME'},
                 {id: 'email', title: 'EMAIL'},
-                {id: 'check_in', title: 'CHECK IN'}
+                {id: 'check_in', title: 'DATE TIME'}
             ]
         });
 
@@ -52,7 +52,6 @@ methods.CreateCSV = async function (data) {
                 console.log('...Done');
             });
     }
-
 };
 
 exports.data = methods;
