@@ -44,19 +44,39 @@ class _SplashWidget extends State<SplashWidget> {
             mainAxisAlignment: MainAxisAlignment.start,
             children: <Widget>[
               Expanded(
+                flex: 2,
                 child: Container(
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
-                      Text(
-                        "Splash",
-                        style: TextStyle(
-                            color: Colors.grey,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 24.0),
-                      )
+                      CircleAvatar(
+                        backgroundColor: Colors.white,
+                        radius: 50.0,
+                        child: Image.asset('images/icon.png')
+                   
+                       // child: Icon(
+                       //  Icons.apps,
+                       // color: Colors.blueAccent,
+                       //size: 50.0,
+                       // ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.only(top: 10.0),
+                      ),
                     ],
                   ),
+                ),
+              ),
+              Expanded(
+                flex: 1,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    CircularProgressIndicator(),
+                    Padding(
+                      padding: EdgeInsets.only(top: 20.0),
+                    ),
+                  ],
                 ),
               )
             ],
