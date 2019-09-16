@@ -21,7 +21,7 @@ class _SplashWidget extends State<SplashWidget> {
     SharedPref.getAccessToken().then(accessToken);
     Timer(
         Duration(seconds: 5),
-        () => Navigator.push(
+        () => Navigator.pushReplacement(
               context,
               MaterialPageRoute(
                   builder: accessToken == null || accessToken ==""
