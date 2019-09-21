@@ -8,6 +8,12 @@ let axios = require('axios');
 const sgMail = require('@sendgrid/mail');
 const createCSV = require('../helpers/csv-writer');
 const readCSV = require('../helpers/csv-reader');
+const mongoose = require('mongoose');
+const Attendee = require('../models/Attendee');
+mongoose.connect(config.MONGODB_CONNECTION, {useNewUrlParser: true}).then(res => {
+    // console.log(res);
+});
+
 sgMail.setApiKey(config.SENDGRID_API_KEY);
 const ticketsFromCsv = [];
 
@@ -31,7 +37,7 @@ router.get('/qrcode/email', async function (req, res) {
                 let email = ticket['email'];
                 let category = ticket['category'];
 
-                console.log('Name: ' + name + ', Payment id: ' + id + ', Email: ' + email + ', Category: ' + category);
+                // console.log('Name: ' + name + ', Payment id: ' + id + ', Email: ' + email + ', Category: ' + category);
 
                 // generate a qrcode and send out email
                 QRCode.toDataURL(id, function (err, url) {
@@ -67,8 +73,40 @@ router.get('/qrcode/email', async function (req, res) {
                 })
             });
 
-            console.log('CSV file successfully processed');
+            // console.log('CSV file successfully processed');
         });
+});
+
+router.get('/db/status/:paymentid/', async function (req, res) {
+    await axios.get(`https://www.instamojo.com/api/1.1/payments/${req.params.paymentid}/`,
+        {
+            headers:
+                {
+                    'X-Api-Key': config.INSTAMOJO_API_KEY,
+                    'X-Auth-Token': config.INSTAMOJO_AUTH_TOKEN
+                }
+
+        }).then(async (data) => {
+        console.log(JSON.stringify(data.data));
+        let today = new Date();
+        let date = today.getDate() + '-' + (today.getMonth() + 1) + '-' + today.getFullYear();
+        var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+        var dateTime = date + ' ' + time;
+        if (data.data['payment'] != null) {
+            if (data.data['payment']['status'] === 'Credit')
+                var attendee_instance = await new Attendee({
+                    event: data.data['payment']['link_title'],
+                    payment_id: data.data['payment']['payment_id'],
+                    name: data.data['payment']['buyer_name'],
+                    email: data.data['payment']['buyer_email'],
+                    date_time: dateTime,
+                });
+            await attendee_instance.save()
+        }
+    }).catch(err => {
+        console.log(err)
+    })
+
 });
 
 router.get('/status/:paymentid/', async function (req, res) {
@@ -76,10 +114,10 @@ router.get('/status/:paymentid/', async function (req, res) {
     await axios.get(`https://www.instamojo.com/api/1.1/payments/${req.params.paymentid}/`,
         {
             headers:
-            {
-                'X-Api-Key': config.INSTAMOJO_API_KEY,
-                'X-Auth-Token': config.INSTAMOJO_AUTH_TOKEN
-            }
+                {
+                    'X-Api-Key': config.INSTAMOJO_API_KEY,
+                    'X-Auth-Token': config.INSTAMOJO_AUTH_TOKEN
+                }
 
         }).then(async (data) => {
             console.log(JSON.stringify(data.data));
@@ -120,17 +158,17 @@ router.get('/t/status/:paymentid/', async function (req, res) {
     await axios.get(`https://www.instamojo.com/api/1.1/payments/${req.params.paymentid}/`,
         {
             headers:
-            {
-                'X-Api-Key': config.INSTAMOJO_API_KEY,
-                'X-Auth-Token': config.INSTAMOJO_AUTH_TOKEN
-            }
+                {
+                    'X-Api-Key': config.INSTAMOJO_API_KEY,
+                    'X-Auth-Token': config.INSTAMOJO_AUTH_TOKEN
+                }
 
         }).then(async (data) => {
-            console.log(JSON.stringify(data.data));
+            // console.log(JSON.stringify(data.data));
             let today = new Date();
             let date = today.getDate() + '-' + (today.getMonth() + 1) + '-' + today.getFullYear();
 
-            console.log(`Current hour: ${today.getHours()}`);
+            // console.log(`Current hour: ${today.getHours()}`);
 
             if (today.getHours() >= 16) {
                 if (data.data['payment'] != null) {
