@@ -100,8 +100,8 @@ router.get('/status/:paymentid/', async function (req, res) {
         var dateTime = date + ' ' + time;
         if (data.data['payment'] != null) {
             if (data.data['payment']['status'] === 'Credit')
-                Attendee.count({payment_id: data.data['payment']['payment_id']}, async function (err, count) {
-                    if (count < 0) {
+                await Attendee.count({payment_id: data.data['payment']['payment_id']}, async function (err, count) {
+                    if (count === 0) {
                         var attendee_instance = await new Attendee({
                             event: data.data['payment']['link_title'],
                             payment_id: data.data['payment']['payment_id'],
@@ -194,7 +194,7 @@ router.get('/t/status/:paymentid/', async function (req, res) {
                     if (data.data['payment']['status'] === 'Credit')
 
                         Attendee.count({payment_id: data.data['payment']['payment_id']}, async function (err, count) {
-                            if (count < 0) {
+                            if (count === 0) {
                                 var schwag_instance = await new Schwag({
                                     event: data.data['payment']['link_title'],
                                     payment_id: data.data['payment']['payment_id'],
