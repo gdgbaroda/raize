@@ -122,7 +122,7 @@ router.get('/status/:paymentid/', async function (req, res) {
         }
     }).catch((error) => {
         console.log(JSON.stringify(error['message']))
-        return res.json({status: false, reason: JSON.stringify(error['message'])});
+        return res.json({status: false, message: JSON.stringify(error['message'])});
     });
 });
 // router.get('/status/:paymentid/', async function (req, res) {
@@ -217,12 +217,12 @@ router.get('/t/status/:paymentid/', async function (req, res) {
                         });
                 }
             } else {
-                return res.json({status: false, reason: 'Giveaway not started yet.'});
+                return res.json({status: false, message: 'Giveaway not started yet.'});
             }
         }
     ).catch((error) => {
         console.log(JSON.stringify(error['message']))
-        return res.json({status: false, reason: JSON.stringify(error['message'])});
+        return res.json({status: false, message: JSON.stringify(error['message'])});
     });
 
 });
