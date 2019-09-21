@@ -31,7 +31,7 @@ router.get('/qrcode/email', async function (req, res) {
                 email: row['Buyer Email Address'],
                 category: row['Link/Purpose']
             });
-        })
+    })
         .on('end', () => {
             ticketsFromCsv.forEach(ticket => {
                 let id = ticket['paymentId'];
@@ -78,10 +78,10 @@ router.get('/qrcode/email', async function (req, res) {
             // console.log('CSV file successfully processed');
         });
 
-    return res.json({ status: true, message: "QR Code sent successfully"});
+    return res.json({status: true, message: "QR Code sent successfully"});
 });
 
-router.get('/db/status/:paymentid/', async function (req, res) {
+router.get('/status/:paymentid/', async function (req, res) {
     await axios.get(`https://www.instamojo.com/api/1.1/payments/${req.params.paymentid}/`,
         {
             headers:
@@ -106,6 +106,9 @@ router.get('/db/status/:paymentid/', async function (req, res) {
                     date_time: dateTime,
                 });
             await attendee_instance.save()
+            return res.json({status: true, message: `${data.data['payment']['buyer_name']} checked in.`});
+        } else {
+            return res.json({status: false, message: `${data.data['payment']['buyer_name']} is already checked in.`});
         }
     }).catch(err => {
         console.log(err)
@@ -113,46 +116,52 @@ router.get('/db/status/:paymentid/', async function (req, res) {
 
 });
 
-router.get('/status/:paymentid/', async function (req, res) {
-
-    await axios.get(`https://www.instamojo.com/api/1.1/payments/${req.params.paymentid}/`,
-        {
-            headers:
-                {
-                    'X-Api-Key': config.INSTAMOJO_API_KEY,
-                    'X-Auth-Token': config.INSTAMOJO_AUTH_TOKEN
-                }
-
-        }).then(async (data) => {
-            console.log(JSON.stringify(data.data));
-            let today = new Date();
-            let date = today.getDate() + '-' + (today.getMonth() + 1) + '-' + today.getFullYear();
-            if (data.data['payment'] != null) {
-                if (data.data['payment']['status'] === 'Credit')
-                    if (fs.existsSync(`./data/${date}_CheckIns.csv`)) {
-                        await fs.createReadStream(`./data/${date}_CheckIns.csv`).pipe(csv()).on('data', async (row) => {
-                            if (row['PAYMENT ID'] !== data.data['payment']['payment_id']) {
-                                await createCSV.data.CreateCSV(data.data, 'CheckIns');
-                                return res.json({status: true, message: `${data.data['payment']['buyer_name']} checked in.`});
-                            } else {
-                                return res.json({status: false, message: `${data.data['payment']['buyer_name']} is already checked in.`});
-                            }
-                        })
-                    } else {
-                        createCSV.data.CreateCSV(data.data, 'CheckIns');
-                        return res.json({status: true, message: `${data.data['payment']['buyer_name']} checked in.`});
-                    }
-            } else {
-                return res.json({status: false, message: `${data.data['payment']['buyer_name']} is already checked in.`});
-            }
-        }
-    ).catch((error) => {
-        console.log(JSON.stringify(error['message']))
-
-        return res.json({status: false, reason: JSON.stringify(error['message'])});
-    });
-
-});
+// router.get('/status/:paymentid/', async function (req, res) {
+//
+//     await axios.get(`https://www.instamojo.com/api/1.1/payments/${req.params.paymentid}/`,
+//         {
+//             headers:
+//                 {
+//                     'X-Api-Key': config.INSTAMOJO_API_KEY,
+//                     'X-Auth-Token': config.INSTAMOJO_AUTH_TOKEN
+//                 }
+//
+//         }).then(async (data) => {
+//             // console.log(JSON.stringify(data.data));
+//             let today = new Date();
+//             let date = today.getDate() + '-' + (today.getMonth() + 1) + '-' + today.getFullYear();
+//             if (data.data['payment'] != null) {
+//                 if (data.data['payment']['status'] === 'Credit')
+//                     if (fs.existsSync(`./data/${date}_CheckIns.csv`)) {
+//                         await fs.createReadStream(`./data/${date}_CheckIns.csv`).pipe(csv()).on('data', async (row) => {
+//                             if (row['PAYMENT ID'] !== data.data['payment']['payment_id']) {
+//                                 await createCSV.data.CreateCSV(data.data, 'CheckIns');
+//                                 return res.json({
+//                                     status: true,
+//                                     message: `${data.data['payment']['buyer_name']} checked in.`
+//                                 });
+//                             } else {
+//                                 return res.json({
+//                                     status: false,
+//                                     message: `${data.data['payment']['buyer_name']} is already checked in.`
+//                                 });
+//                             }
+//                         })
+//                     } else {
+//                         createCSV.data.CreateCSV(data.data, 'CheckIns');
+//                         return res.json({status: true, message: `${data.data['payment']['buyer_name']} checked in.`});
+//                     }
+//             } else {
+//                 return res.json({status: false, message: `${data.data['payment']['buyer_name']} is already checked in.`});
+//             }
+//         }
+//     ).catch((error) => {
+//         console.log(JSON.stringify(error['message']))
+//
+//         return res.json({status: false, reason: JSON.stringify(error['message'])});
+//     });
+//
+// });
 
 router.get('/t/status/:paymentid/', async function (req, res) {
 
@@ -178,17 +187,29 @@ router.get('/t/status/:paymentid/', async function (req, res) {
                             await fs.createReadStream(`./data/${date}_GiveAways.csv`).pipe(csv()).on('data', async (row) => {
                                 if (row['PAYMENT ID'] !== data.data['payment']['payment_id']) {
                                     await createCSV.data.CreateCSV(data.data, 'GiveAways');
-                                    return res.json({status: true, message: `${data.data['payment']['buyer_name']} is schwagged up!`});
+                                    return res.json({
+                                        status: true,
+                                        message: `${data.data['payment']['buyer_name']} is schwagged up!`
+                                    });
                                 } else {
-                                    return res.json({status: false, message: `${data.data['payment']['buyer_name']} is already schwagged up.`});
+                                    return res.json({
+                                        status: false,
+                                        message: `${data.data['payment']['buyer_name']} is already schwagged up.`
+                                    });
                                 }
                             })
                         } else {
                             createCSV.data.CreateCSV(data.data, 'GiveAways');
-                            return res.json({status: true, message: `${data.data['payment']['buyer_name']} is schwagged up!`});
+                            return res.json({
+                                status: true,
+                                message: `${data.data['payment']['buyer_name']} is schwagged up!`
+                            });
                         }
                 } else {
-                    return res.json({status: false, message: `${data.data['payment']['buyer_name']} is already schwagged up.`});
+                    return res.json({
+                        status: false,
+                        message: `${data.data['payment']['buyer_name']} is already schwagged up.`
+                    });
                 }
             } else {
                 return res.json({status: false, reason: 'Giveaway not started yet.'});
@@ -227,15 +248,15 @@ router.get('/data/clear', async function (req, res) {
 
     fs.readdir(directory, (err, files) => {
         if (err) throw err;
-      
-        for (const file of files) {
-          fs.unlink(path.join(directory, file), err => {
-            if (err) throw err;
-          });
-        }
-      });
 
-      return res.json(`${directory} contents cleared`);
+        for (const file of files) {
+            fs.unlink(path.join(directory, file), err => {
+                if (err) throw err;
+            });
+        }
+    });
+
+    return res.json(`${directory} contents cleared`);
 });
 
 module.exports = router;
