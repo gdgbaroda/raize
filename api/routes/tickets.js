@@ -10,6 +10,8 @@ const createCSV = require('../helpers/csv-writer');
 const readCSV = require('../helpers/csv-reader');
 const mongoose = require('mongoose');
 const Attendee = require('../models/Attendee');
+const Schwag = require('../models/Schwag');
+
 mongoose.connect(config.MONGODB_CONNECTION, {useNewUrlParser: true}).then(res => {
     // console.log(res);
 });
@@ -98,24 +100,31 @@ router.get('/status/:paymentid/', async function (req, res) {
         var dateTime = date + ' ' + time;
         if (data.data['payment'] != null) {
             if (data.data['payment']['status'] === 'Credit')
-                var attendee_instance = await new Attendee({
-                    event: data.data['payment']['link_title'],
-                    payment_id: data.data['payment']['payment_id'],
-                    name: data.data['payment']['buyer_name'],
-                    email: data.data['payment']['buyer_email'],
-                    date_time: dateTime,
+                Attendee.count({payment_id: data.data['payment']['payment_id']}, async function (err, count) {
+                    if (count < 0) {
+                        var attendee_instance = await new Attendee({
+                            event: data.data['payment']['link_title'],
+                            payment_id: data.data['payment']['payment_id'],
+                            name: data.data['payment']['buyer_name'],
+                            email: data.data['payment']['buyer_email'],
+                            date: date,
+                            time: time,
+                        });
+                        await attendee_instance.save()
+                        return res.json({status: true, message: `${data.data['payment']['buyer_name']} checked in.`});
+                    } else {
+                        return res.json({
+                            status: false,
+                            message: `${data.data['payment']['buyer_name']} is already checked in.`
+                        });
+                    }
                 });
-            await attendee_instance.save()
-            return res.json({status: true, message: `${data.data['payment']['buyer_name']} checked in.`});
-        } else {
-            return res.json({status: false, message: `${data.data['payment']['buyer_name']} is already checked in.`});
         }
-    }).catch(err => {
-        console.log(err)
-    })
-
+    }).catch((error) => {
+        console.log(JSON.stringify(error['message']))
+        return res.json({status: false, reason: JSON.stringify(error['message'])});
+    });
 });
-
 // router.get('/status/:paymentid/', async function (req, res) {
 //
 //     await axios.get(`https://www.instamojo.com/api/1.1/payments/${req.params.paymentid}/`,
@@ -183,33 +192,29 @@ router.get('/t/status/:paymentid/', async function (req, res) {
             if (today.getHours() >= 16) {
                 if (data.data['payment'] != null) {
                     if (data.data['payment']['status'] === 'Credit')
-                        if (fs.existsSync(`./data/${date}_GiveAways.csv`)) {
-                            await fs.createReadStream(`./data/${date}_GiveAways.csv`).pipe(csv()).on('data', async (row) => {
-                                if (row['PAYMENT ID'] !== data.data['payment']['payment_id']) {
-                                    await createCSV.data.CreateCSV(data.data, 'GiveAways');
-                                    return res.json({
-                                        status: true,
-                                        message: `${data.data['payment']['buyer_name']} is schwagged up!`
-                                    });
-                                } else {
-                                    return res.json({
-                                        status: false,
-                                        message: `${data.data['payment']['buyer_name']} is already schwagged up.`
-                                    });
-                                }
-                            })
-                        } else {
-                            createCSV.data.CreateCSV(data.data, 'GiveAways');
-                            return res.json({
-                                status: true,
-                                message: `${data.data['payment']['buyer_name']} is schwagged up!`
-                            });
-                        }
-                } else {
-                    return res.json({
-                        status: false,
-                        message: `${data.data['payment']['buyer_name']} is already schwagged up.`
-                    });
+
+                        Attendee.count({payment_id: data.data['payment']['payment_id']}, async function (err, count) {
+                            if (count < 0) {
+                                var schwag_instance = await new Schwag({
+                                    event: data.data['payment']['link_title'],
+                                    payment_id: data.data['payment']['payment_id'],
+                                    name: data.data['payment']['buyer_name'],
+                                    email: data.data['payment']['buyer_email'],
+                                    date: date,
+                                    time: time,
+                                });
+                                await schwag_instance.save()
+                                return res.json({
+                                    status: true,
+                                    message: `${data.data['payment']['buyer_name']} is schwagged up!`
+                                });
+                            } else {
+                                return res.json({
+                                    status: false,
+                                    message: `${data.data['payment']['buyer_name']} is already schwagged up.`
+                                });
+                            }
+                        });
                 }
             } else {
                 return res.json({status: false, reason: 'Giveaway not started yet.'});
@@ -217,7 +222,6 @@ router.get('/t/status/:paymentid/', async function (req, res) {
         }
     ).catch((error) => {
         console.log(JSON.stringify(error['message']))
-
         return res.json({status: false, reason: JSON.stringify(error['message'])});
     });
 
