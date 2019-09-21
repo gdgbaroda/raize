@@ -186,14 +186,13 @@ router.get('/t/status/:paymentid/', async function (req, res) {
             // console.log(JSON.stringify(data.data));
             let today = new Date();
             let date = today.getDate() + '-' + (today.getMonth() + 1) + '-' + today.getFullYear();
-
+            var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
             // console.log(`Current hour: ${today.getHours()}`);
 
-            if (today.getHours() >= 16) {
+            if (today.getHours() >= 10) {
                 if (data.data['payment'] != null) {
                     if (data.data['payment']['status'] === 'Credit')
-
-                        Attendee.count({payment_id: data.data['payment']['payment_id']}, async function (err, count) {
+                        await Schwag.count({payment_id: data.data['payment']['payment_id']}, async function (err, count) {
                             if (count === 0) {
                                 var schwag_instance = await new Schwag({
                                     event: data.data['payment']['link_title'],
