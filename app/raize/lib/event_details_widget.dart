@@ -5,11 +5,9 @@ import 'package:raize/models/event_model.dart';
 class EventDetailsWidget extends StatefulWidget {
   static String tag = 'eventList-screen';
 
-  // Declare a field that holds the Todo.
   final EventModel eventModel;
   final String groupName;
 
-  // In the constructor, require a Todo.
   EventDetailsWidget({@required  this.eventModel, this.groupName}) ;
 
   @override

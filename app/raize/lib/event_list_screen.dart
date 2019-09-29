@@ -34,7 +34,6 @@ class _EventListWidget extends State<EventListWidget> {
   @override
   void initState() {
     super.initState();
-    //this will be called at the start of the activity,it will add dummy data to our list
 
     // use the api manager to fetch upcoming events
     if (this.widget.result == null) {
@@ -50,23 +49,23 @@ class _EventListWidget extends State<EventListWidget> {
   //creates view for each item in listview
   Widget _createEventsParentItem(
       BuildContext context, EventListItemModel eventList) {
-    return new Column(
+    return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Padding(
-            padding: const EdgeInsets.fromLTRB(8, 0, 0, 0),
+            padding: EdgeInsets.fromLTRB(8, 0, 0, 0),
             child: Text(
               eventList.title,
-              style: new TextStyle(
+              style: TextStyle(
                 fontSize: 14.0,
                 color: Colors.grey,
               ),
               textAlign: TextAlign.left,
             )),
-        ListView.builder(
-          padding: new EdgeInsets.all(8.0),
+        ListView.builder(  //sublist for events of group
+          padding: EdgeInsets.all(8.0),
           shrinkWrap: true,
-          physics: const NeverScrollableScrollPhysics(),
+          physics: NeverScrollableScrollPhysics(),
           itemCount: eventList.events.length,
           itemBuilder: (BuildContext context, int index) {
             return _createEventItem(context, eventList.events[index],
@@ -74,7 +73,6 @@ class _EventListWidget extends State<EventListWidget> {
           },
         ),
 
-//          new Divider(height: 15.0,color: Colors.black,),
       ],
     );
   }
@@ -82,14 +80,13 @@ class _EventListWidget extends State<EventListWidget> {
   //creates view for each item in listview
   Widget _createEventItem(BuildContext context, EventModel eventModel,
       String thumbnail, String groupName) {
-    return new GestureDetector(
+    return GestureDetector(
       //listens for on tap
       onTap: () {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => EventDetailsWidget(
-                eventModel: eventModel, groupName: groupName),
+            builder: (context) => EventDetailsWidget(eventModel: eventModel, groupName: groupName),
             //builder: (context) => new EventDetailsWidget()
           ),
         );
@@ -98,10 +95,10 @@ class _EventListWidget extends State<EventListWidget> {
         children: <Widget>[
           Card(
               child: Padding(
-                  padding: new EdgeInsets.all(8.0),
+                  padding: EdgeInsets.all(8.0),
                   child: Row(
                     children: <Widget>[
-                      new Image.network(thumbnail,
+                      Image.network(thumbnail,
                           height: 80.0, width: 80.0, fit: BoxFit.fitHeight),
                       Expanded(
                           child: Container(
@@ -113,7 +110,6 @@ class _EventListWidget extends State<EventListWidget> {
                     ],
                   ))),
 
-//          new Divider(height: 15.0,color: Colors.black,),
         ],
       ),
     );
@@ -146,33 +142,33 @@ class _EventListWidget extends State<EventListWidget> {
     );
   }
 
+  //ui is created here
   @override
   Widget build(BuildContext context) {
-    return new Scaffold(
+    return Scaffold(
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(600.0),
-        child: const Text(''),
+        child: Text(''),
       ),
-      body: new Container(
-        padding:
-            new EdgeInsets.only(top: 16.0, left: 8.0, right: 8.0, bottom: 8.0),
-        child: new Column(
+      body: Container(
+        padding: EdgeInsets.only(top: 16.0, left: 8.0, right: 8.0, bottom: 8.0),
+        child: Column(
           children: <Widget>[
-            new Expanded(
+            Expanded(
                 child: Card(
-              child: _isLoading
+              child: _isLoading                   //if data is available list will be displayed or else loading will be showed
                   ? Container(
                       child: Center(child: CircularProgressIndicator()),
                       padding: EdgeInsets.all(16.0),
                     )
                   : ListView.builder(
-                      padding: new EdgeInsets.all(8.0),
+                      padding: EdgeInsets.all(8.0),
                       shrinkWrap: true,
                       itemCount: _items.groups.length,
                       itemBuilder: (BuildContext context, int index) {
                         EventListItemModel eventListModel =
                             _items.groups[index];
-                        return _createEventsParentItem(context, eventListModel);
+                        return _createEventsParentItem(context, eventListModel); //calls this for each item in list
                       },
                     ),
             ))

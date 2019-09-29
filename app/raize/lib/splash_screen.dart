@@ -71,12 +71,6 @@ class _SplashWidget extends State<SplashWidget> {
                           backgroundColor: Colors.white,
                           radius: 50.0,
                           child: Image.asset('images/icon.png')
-
-                          // child: Icon(
-                          //  Icons.apps,
-                          // color: Colors.blueAccent,
-                          //size: 50.0,
-                          // ),
                           ),
                       Padding(
                         padding: EdgeInsets.only(top: 10.0),
