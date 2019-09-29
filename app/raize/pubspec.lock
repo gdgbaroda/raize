@@ -21,7 +21,7 @@ packages:
       name: async
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.3.0"
+    version: "2.2.0"
   barcode_scan:
     dependency: "direct main"
     description:
@@ -35,7 +35,7 @@ packages:
       name: boolean_selector
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.0.5"
+    version: "1.0.4"
   charcode:
     dependency: transitive
     description:
@@ -80,6 +80,18 @@ packages:
     version: "0.1.2"
   flutter:
     dependency: "direct main"
+    description: flutter
+    source: sdk
+    version: "0.0.0"
+  flutter_launcher_icons:
+    dependency: "direct dev"
+    description:
+      name: flutter_launcher_icons
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.7.3"
+  flutter_test:
+    dependency: "direct dev"
     description: flutter
     source: sdk
     version: "0.0.0"
@@ -131,21 +143,21 @@ packages:
       name: meta
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.1.7"
+    version: "1.1.6"
   path:
     dependency: transitive
     description:
       name: path
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.6.4"
+    version: "1.6.2"
   pedantic:
     dependency: transitive
     description:
       name: pedantic
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.8.0+1"
+    version: "1.7.0"
   petitparser:
     dependency: transitive
     description:
@@ -159,7 +171,7 @@ packages:
       name: quiver
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.0.5"
+    version: "2.0.3"
   shared_preferences:
     dependency: "direct main"
     description:
@@ -206,7 +218,7 @@ packages:
       name: string_scanner
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.0.5"
+    version: "1.0.4"
   term_glyph:
     dependency: transitive
     description:

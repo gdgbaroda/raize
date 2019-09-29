@@ -104,7 +104,7 @@ class _QRScanState extends State<QRScanState> {
             color: Colors.red,
           ),
           Container(
-            margin: const EdgeInsets.only(top: 10.0),
+            margin: EdgeInsets.only(top: 10.0),
             child: Text(qrMessage,
                 style: TextStyle(
                     fontSize: 18.0,
