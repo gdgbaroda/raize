@@ -9,8 +9,6 @@ let MeetupOAuth2Strategy = require('passport-oauth2-meetup').Strategy;
 
 mongoose.connect(config.MONGODB_CONNECTION, {useNewUrlParser: true});
 
-// var instamojoMiddleWare = instamojoWebhook({ secretKey: 'cb50d23c46e5470580dca78a50b3c10a'});
-
 passport.use(new MeetupOAuth2Strategy({
     clientID: config.MEETUP_CLIENT_ID,
     clientSecret: config.MEETUP_CLIENT_SECRET,
@@ -39,17 +37,13 @@ router.get('/auth',
  *      description: Handle callback for the authorized meetup user
  */
 router.get('/callback', function (req, res) {
-
     if (req.query == {})
         return res.json(false);
-
     if (req.query.code == undefined)
         return res.json(false);
-    
     // ensure the query parameter has a value
     if (req.query.code != '')
         return res.json(true);
-
     return res.json(false);
 });
 
@@ -85,32 +79,21 @@ router.get('/callback/token', function (req, res) {
  *      description: Get events by group on meetup.com
  */
 router.get('/events', async function (req, res) {
-
     var bearerHeader = req.headers["authorization"];
-
     let parsed_group_data = [];
-
     await axios.get('https://api.meetup.com/self/groups', {
         headers: {
             Authorization: bearerHeader
         }
     }).then(async (groups) => {
-
-        for(let group of groups.data)
-        {
+        for(let group of groups.data) {
             console.log('Group: ' + JSON.stringify(group))
-
             let events = await GetEvents(group.urlname, bearerHeader)
-
-            if(JSON.stringify(events) !== '[]')
-            {
+            if (JSON.stringify(events) !== '[]') {
                 let photo_url = "";
-
-                if(group.group_photo != undefined)
+                if (group.group_photo != undefined)
                     photo_url = group.group_photo.thumb_link
-
                 parsed_group_data.push({
-
                     id:group.id,
                     title: group.name,
                     source: "meetup",
@@ -121,52 +104,36 @@ router.get('/events', async function (req, res) {
                 });
             }
         }
-
         return res.json({groups: parsed_group_data})
-
     }).catch((error) => {
         console.error(error)
     });
-
 });
 
 // get events by urlname (name of group as given my meetup.com)
 async function GetEvents(urlname, tokenHeader) {
-    try 
-    {
+    try {
         let parsed_events = [];
-
         const response = await axios.get(`https://api.meetup.com/${urlname}/events`, {
                             headers: {
                                 Authorization: tokenHeader
                             }
                         });
-
-        if(JSON.stringify(response.data) !== '[]')
-        {
-            for(let event of response.data)
-            {
+        if (JSON.stringify(response.data) !== '[]') {
+            for (let event of response.data) {
                 let events_by_host = await GetEventsByHost(event.id, urlname, tokenHeader)
-
                 // console.log('event ' + JSON.stringify(event.description_images));
-
-                if(JSON.stringify(events_by_host) !== '{}')
-                {
+                if (JSON.stringify(events_by_host) !== '{}') {
                     parsed_events.push({
-                        
                         id: event.id,
                         title: event.name,
                         host:true,
                         description: event.description,
                         venue: event.venue,
                         duration: event.duration
-    
                     })
-                }
-                else
-                {
+                } else {
                     parsed_events.push({
-
                         id: event.id,
                         title: event.name,
                         host:false,
@@ -176,14 +143,10 @@ async function GetEvents(urlname, tokenHeader) {
                     })
                 }
             }
-        }
-        else
-        {
+        } else {
             console.log('No events for ' + urlname);
         }
-
         return parsed_events;
-
     } catch (error) {
       console.error(error);
     }
@@ -191,51 +154,36 @@ async function GetEvents(urlname, tokenHeader) {
 
 // get events by host (compare by the logged in user meetup user id)
 async function GetEventsByHost(event_id, urlname, tokenHeader) {
-    try 
-    {
+    try {
         let filtered_events = {};
-
         const response = await axios.get(`https://api.meetup.com/${urlname}/events/${event_id}/rsvps`, {
                         headers: {
                             Authorization: tokenHeader
                         }
                     });
-
-        if(JSON.stringify(response.data) !== '[]')
-        {
+        if (JSON.stringify(response.data) !== '[]') {
             // get profile for the logged in user
             let profile = await GetProfile(tokenHeader)
-
             // filter by member id
-            var result = response.data.filter(function(obj, index){
+            var result = response.data.filter(function(obj, index) {
                 return obj.member.id === profile.id;
             })
-
-            if(JSON.stringify(result) !== '[]')
-            {
-                for(let event of result)
-                {
-                    if(event.member.event_context.host === true)
-                    {
+            if (JSON.stringify(result) !== '[]') {
+                for (let event of result) {
+                    if (event.member.event_context.host === true) {
                         filtered_events = {
                             id:event.event.id,
                             host:event.member.event_context.host
                         }
-                    }
-                    else
-                    {
+                    } else {
                         console.log('Is event host: ' + JSON.stringify(event.member.event_context.host))
                     }
                 }
             }
-        }
-        else
-        {
+        } else {
             console.log('No events for ' + urlname);
         }
-
         return filtered_events;
-
     } catch (error) {
       console.error(error);
     }
@@ -243,16 +191,13 @@ async function GetEventsByHost(event_id, urlname, tokenHeader) {
 
 // get the meetup.com profile for the logged in user
 async function GetProfile(tokenHeader) {
-    try 
-    {
+    try {
         const response = await axios.get(`https://api.meetup.com/members/self`, {
             headers: {
                 Authorization: tokenHeader
             }
         });
-
         return response.data;
-
     } catch (error) {
       console.error(error);
     }
